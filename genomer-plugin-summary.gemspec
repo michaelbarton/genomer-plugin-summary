@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "genomer-plugin-summary"
   gem.require_paths = ["lib"]
   gem.version       = Genomer::Plugin::Summary::VERSION
+
+  gem.add_development_dependency 'rake', '~> 0.9.0'
 end
