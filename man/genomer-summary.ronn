@@ -3,7 +3,7 @@ genomer-summary(1) -- generate summaries of genomer projects
 
 ## SYNOPSIS
 
-`genomer view` <summary-type> [<options>...]
+`genomer summary` <summary-type> [<options>...]
 
 ## DESCRIPTION
 
