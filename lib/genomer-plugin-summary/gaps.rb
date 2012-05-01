@@ -3,6 +3,10 @@ require 'terminal-table'
 
 class GenomerPluginSummary::Gaps < Genomer::Plugin
 
+  def run
+    tabulate determine_gaps scaffold
+  end
+
   def headings
     ['Number'.center(8),
      'Length'.center(8),
