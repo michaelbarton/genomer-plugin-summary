@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "genomer-plugin-summary"
   gem.require_paths = ["lib"]
-  gem.version       = Genomer::Plugin::Summary::VERSION
+  gem.version       = GenomerPluginSummary::VERSION
 
   gem.add_development_dependency 'rake', '~> 0.9.0'
 
