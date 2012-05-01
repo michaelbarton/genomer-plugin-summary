@@ -15,29 +15,4 @@ RSpec.configure do |config|
 
   include Scaffolder::Test
   include Scaffolder::Test::Helpers
-
-  class MockSettings
-
-    attr :rest
-
-    def initialize(rest = [], command_args = {})
-      @rest = rest
-      @args = command_args
-    end
-
-    def [](arg)
-      @args[arg]
-    end
-
-    def flags
-      @args
-    end
-
-  end
-
-  config.after(:each) do
-    instance_variables.each do |ivar|
-      instance_variable_set(ivar, nil)
-    end
-  end
 end
