@@ -1,6 +1,4 @@
 # -*- encoding: utf-8 -*-
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
-require 'genomer-plugin-summary/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Michael Barton"]
@@ -14,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "genomer-plugin-summary"
   gem.require_paths = ["lib"]
-  gem.version       = GenomerPluginSummary::VERSION
+  gem.version       = File.read 'VERSION'
 
   gem.add_dependency "genomer",        ">= 0.0.4"
   gem.add_dependency "terminal-table", "~> 1.4.5"
