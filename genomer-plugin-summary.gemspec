@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/genomer-plugin-summary/version', __FILE__)
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
+require 'genomer-plugin-summary/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Michael Barton"]
@@ -14,6 +15,8 @@ Gem::Specification.new do |gem|
   gem.name          = "genomer-plugin-summary"
   gem.require_paths = ["lib"]
   gem.version       = GenomerPluginSummary::VERSION
+
+  gem.add_dependency "genomer", ">= 0.0.4"
 
   gem.add_development_dependency 'rake', '~> 0.9.0'
 
