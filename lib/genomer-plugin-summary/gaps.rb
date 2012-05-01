@@ -49,14 +49,24 @@ class GenomerPluginSummary::Gaps < Genomer::Plugin
     length = 0
 
     scaffold.map do |entry|
-      gaps = gap_locations(entry.sequence).map do |gap|
-        count += 1
-        {:number => count,
-         :length => (gap.end - gap.begin) + 1,
-         :start  => gap.begin + length,
-         :end    => gap.end   + length,
-         :type   => :contig}
-      end
+      gaps = case entry.entry_type
+             when :sequence then
+               gap_locations(entry.sequence).map do |gap|
+                 count += 1
+                 {:number => count,
+                  :length => (gap.end - gap.begin) + 1,
+                  :start  => gap.begin + length,
+                  :end    => gap.end   + length,
+                  :type   => :contig}
+               end
+             when :unresolved then
+               count += 1
+               {:number => count,
+                :length => entry.sequence.length,
+                :start  => length + 1,
+                :end    => length + entry.sequence.length,
+                :type   => :unresolved}
+             end
       length += entry.sequence.length
       gaps
     end.flatten

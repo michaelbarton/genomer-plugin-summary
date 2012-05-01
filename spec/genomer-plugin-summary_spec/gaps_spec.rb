@@ -77,6 +77,14 @@ describe GenomerPluginSummary::Gaps do
     def sequence(seq)
       s = mock!
       stub(s).sequence{ seq }
+      stub(s).entry_type{ :sequence }
+      s
+    end
+
+    def unresolved(seq)
+      s = mock!
+      stub(s).sequence{ seq }
+      stub(s).entry_type{ :unresolved }
       s
     end
 
@@ -122,6 +130,35 @@ describe GenomerPluginSummary::Gaps do
       end
     end
 
+    context "a scaffold with two contigs separated by an unresolved region" do
+      let(:scaffold) do
+        [sequence('AAT'),
+         unresolved('NNNNNNNNNN'),
+         sequence('AAT')]
+      end
+
+      it do
+        should == [
+          {:number => 1, :length => 10, :start => 4,  :end => 13,  :type => :unresolved}]
+      end
+    end
+
+    context "a scaffold with a mixture of gapped contigs and unresolved regions" do
+      let(:scaffold) do
+        [sequence('AAANNNTTT'),
+         unresolved('NNNNNNNNNN'),
+         sequence('AAANT'),
+         unresolved('NNNNNNNNNN')]
+      end
+
+      it do
+        should == [
+          {:number => 1, :length => 3,  :start => 4,   :end => 6,  :type => :contig},
+          {:number => 2, :length => 10, :start => 10,  :end => 19, :type => :unresolved},
+          {:number => 3, :length => 1,  :start => 23,  :end => 23, :type => :contig},
+          {:number => 4, :length => 10, :start => 25,  :end => 34, :type => :unresolved}]
+      end
+    end
   end
 
   describe "#gap_locations" do
