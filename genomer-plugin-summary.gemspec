@@ -15,8 +15,13 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Genomer::Plugin::Summary::VERSION
 
-  gem.add_development_dependency 'rake',     '~> 0.9.0'
-  gem.add_development_dependency 'rspec',    '~> 2.9.0'
+  gem.add_development_dependency 'rake', '~> 0.9.0'
+
+  gem.add_development_dependency 'rspec',                   '~> 2.9.0'
+  gem.add_development_dependency "rr",                      "~> 1.0.4"
+  gem.add_development_dependency "scaffolder-test-helpers", "~> 0.4.0"
+
   gem.add_development_dependency 'cucumber', '~> 1.1.9'
   gem.add_development_dependency 'aruba',    '~> 0.4.11'
+
 end
