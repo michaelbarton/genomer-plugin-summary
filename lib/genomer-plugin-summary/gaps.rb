@@ -38,8 +38,28 @@ class GenomerPluginSummary::Gaps < Genomer::Plugin
     table
   end
 
+  def gap_locations(seq)
+    seq.upcase.enum_for(:scan, /(N+)/).map do
+      (Regexp.last_match.begin(0)+1)..(Regexp.last_match.end(0))
+    end
+  end
+
   def determine_gaps(scaffold)
-    []
+    count  = 0
+    length = 0
+
+    scaffold.map do |entry|
+      gaps = gap_locations(entry.sequence).map do |gap|
+        count += 1
+        {:number => count,
+         :length => (gap.end - gap.begin) + 1,
+         :start  => gap.begin + length,
+         :end    => gap.end   + length,
+         :type   => :contig}
+      end
+      length += entry.sequence.length
+      gaps
+    end.flatten
   end
 
 end
