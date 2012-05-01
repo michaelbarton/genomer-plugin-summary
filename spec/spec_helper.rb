@@ -2,6 +2,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rspec'
 require 'scaffolder/test/helpers'
+require 'heredoc_unindent'
 require 'genomer-plugin-summary'
 
 # Requires supporting files with custom matchers and macros, etc,

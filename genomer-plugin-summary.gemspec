@@ -16,11 +16,13 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = GenomerPluginSummary::VERSION
 
-  gem.add_dependency "genomer", ">= 0.0.4"
+  gem.add_dependency "genomer",        ">= 0.0.4"
+  gem.add_dependency "terminal-table", "~> 1.4.5"
 
   gem.add_development_dependency 'rake', '~> 0.9.0'
 
   gem.add_development_dependency 'rspec',                   '~> 2.9.0'
+  gem.add_development_dependency "heredoc_unindent",        "~> 1.1.2"
   gem.add_development_dependency "rr",                      "~> 1.0.4"
   gem.add_development_dependency "scaffolder-test-helpers", "~> 0.4.0"
 
