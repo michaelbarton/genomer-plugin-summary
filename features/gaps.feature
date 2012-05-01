@@ -22,10 +22,10 @@ Feature: Producing a summary of the scaffold gaps
      Then the exit status should be 0
       And the output should contain:
       """
-      +----------------------------------------------------------+
-      |  Scaffold Gaps                                           |
       +----------+----------+----------+----------+--------------+
-      |  Number  |  Length  |   Start  |    End   |     Type     |
+      |                      Scaffold Gaps                       |
+      +----------+----------+----------+----------+--------------+
+      |  Number  |  Length  |  Start   |   End    |     Type     |
       +----------+----------+----------+----------+--------------+
       +----------+----------+----------+----------+--------------+
       """
@@ -49,10 +49,10 @@ Feature: Producing a summary of the scaffold gaps
      Then the exit status should be 0
       And the output should contain:
       """
-      +----------------------------------------------------------+
-      |  Scaffold Gaps                                           |
       +----------+----------+----------+----------+--------------+
-      |  Number  |  Length  |   Start  |    End   |     Type     |
+      |                      Scaffold Gaps                       |
+      +----------+----------+----------+----------+--------------+
+      |  Number  |  Length  |  Start   |   End    |     Type     |
       +----------+----------+----------+----------+--------------+
       |        1 |        3 |        4 |        6 |    contig    |
       +----------+----------+----------+----------+--------------+
@@ -83,12 +83,12 @@ Feature: Producing a summary of the scaffold gaps
      Then the exit status should be 0
       And the output should contain:
       """
-      +----------------------------------------------------------+
-      |  Scaffold Gaps                                           |
       +----------+----------+----------+----------+--------------+
-      |  Number  |  Length  |   Start  |    End   |     Type     |
+      |                      Scaffold Gaps                       |
       +----------+----------+----------+----------+--------------+
-      |        1 |       10 |        6 |       16 |  unresolved  |
+      |  Number  |  Length  |  Start   |   End    |     Type     |
+      +----------+----------+----------+----------+--------------+
+      |        1 |       10 |        6 |       15 |  unresolved  |
       +----------+----------+----------+----------+--------------+
       """
 
@@ -119,13 +119,13 @@ Feature: Producing a summary of the scaffold gaps
      Then the exit status should be 0
       And the output should contain:
       """
-      +----------------------------------------------------------+
-      |  Scaffold Gaps                                           |
       +----------+----------+----------+----------+--------------+
-      |  Number  |  Length  |   Start  |    End   |     Type     |
+      |                      Scaffold Gaps                       |
+      +----------+----------+----------+----------+--------------+
+      |  Number  |  Length  |  Start   |   End    |     Type     |
       +----------+----------+----------+----------+--------------+
       |        1 |        3 |        4 |        6 |    contig    |
-      |        2 |       10 |       10 |       20 |  unresolved  |
-      |        3 |        1 |       22 |       22 |    contig    |
+      |        2 |       10 |       10 |       19 |  unresolved  |
+      |        3 |        1 |       21 |       21 |    contig    |
       +----------+----------+----------+----------+--------------+
       """
