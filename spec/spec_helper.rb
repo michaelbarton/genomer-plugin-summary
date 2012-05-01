@@ -1,7 +1,6 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rspec'
-require 'scaffolder/test/helpers'
 require 'heredoc_unindent'
 require 'genomer-plugin-summary'
 
@@ -13,7 +12,4 @@ end
 
 RSpec.configure do |config|
   config.mock_with :rr
-
-  include Scaffolder::Test
-  include Scaffolder::Test::Helpers
 end

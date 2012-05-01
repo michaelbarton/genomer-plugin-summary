@@ -24,7 +24,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec',                   '~> 2.9.0'
   gem.add_development_dependency "heredoc_unindent",        "~> 1.1.2"
   gem.add_development_dependency "rr",                      "~> 1.0.4"
-  gem.add_development_dependency "scaffolder-test-helpers", "~> 0.4.0"
 
   gem.add_development_dependency 'cucumber', '~> 1.1.9'
   gem.add_development_dependency 'aruba',    '~> 0.4.11'

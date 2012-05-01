@@ -74,6 +74,12 @@ describe GenomerPluginSummary::Gaps do
 
   describe "#determine_gaps" do
 
+    def sequence(seq)
+      s = mock!
+      stub(s).sequence{ seq }
+      s
+    end
+
     subject do
       described_class.new([],{}).determine_gaps(scaffold)
     end
@@ -88,7 +94,7 @@ describe GenomerPluginSummary::Gaps do
 
     context "a scaffold with a single contig" do
       let(:scaffold) do
-        [Sequence.new(:sequence => 'AAATTT')]
+        [sequence('AAATTT')]
       end
 
       it{ should == []}
@@ -96,7 +102,7 @@ describe GenomerPluginSummary::Gaps do
 
     context "a scaffold with a single contig containing a gap" do
       let(:scaffold) do
-        [Sequence.new(:sequence => 'AANNTT')]
+        [sequence('AANNTT')]
       end
 
       it do
@@ -106,7 +112,7 @@ describe GenomerPluginSummary::Gaps do
 
     context "a scaffold with a two contigs containing gaps" do
       let(:scaffold) do
-        [Sequence.new(:sequence => 'AANNTT'),Sequence.new(:sequence => 'AANNTT')]
+        [sequence('AANNTT'), sequence('AANNTT')]
       end
 
       it do
