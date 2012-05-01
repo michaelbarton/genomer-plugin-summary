@@ -38,4 +38,8 @@ class GenomerPluginSummary::Gaps < Genomer::Plugin
     table
   end
 
+  def determine_gaps(scaffold)
+    []
+  end
+
 end
