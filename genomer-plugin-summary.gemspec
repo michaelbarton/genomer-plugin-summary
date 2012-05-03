@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/genomer-plugin-summary/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Michael Barton"]
   gem.email         = ["mail@michaelbarton.me.uk"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Genomer plugin for generating reports}
+  gem.summary       = %q{Generates reports on the status of the genomer project}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
@@ -13,5 +12,18 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "genomer-plugin-summary"
   gem.require_paths = ["lib"]
-  gem.version       = Genomer::Plugin::Summary::VERSION
+  gem.version       = File.read 'VERSION'
+
+  gem.add_dependency "genomer",        ">= 0.0.4"
+  gem.add_dependency "terminal-table", "~> 1.4.5"
+
+  gem.add_development_dependency 'rake', '~> 0.9.0'
+
+  gem.add_development_dependency 'rspec',            '~> 2.9.0'
+  gem.add_development_dependency "heredoc_unindent", "~> 1.1.2"
+  gem.add_development_dependency "rr",               "~> 1.0.4"
+
+  gem.add_development_dependency 'cucumber', '~> 1.1.9'
+  gem.add_development_dependency 'aruba',    '~> 0.4.11'
+
 end
