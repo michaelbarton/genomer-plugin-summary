@@ -6,7 +6,7 @@ describe GenomerPluginSummary::Gaps do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(contigs).to_s + "\n"
+      described_class.new([],{}).tabulate(contigs) + "\n"
     end
 
     context "passed an empty array" do

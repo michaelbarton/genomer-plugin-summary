@@ -39,7 +39,7 @@ class GenomerPluginSummary::Gaps < Genomer::Plugin
     table.align_column 3, :right
     table.align_column 4, :center
 
-    table
+    table.to_s
   end
 
   def gap_locations(seq)
