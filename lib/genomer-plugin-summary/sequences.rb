@@ -52,6 +52,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
 
   def calculate(scaffold)
     length = 0
+    total_length = scaffold.map(&:sequence).join.length.to_f
     scaffold.reject{|i| i.entry_type == :unresolved}.map do |entry|
 
       entry_length = entry.sequence.length
@@ -59,7 +60,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
             :start    => length + 1, 
             :end      => length + entry_length,
             :size     => entry_length,
-            :percent  => entry_length / (length + entry_length).to_f * 100,
+            :percent  => entry_length / total_length * 100,
             :gc       => gc_content(entry.sequence) }
       length += entry.sequence.length
       i

@@ -152,6 +152,18 @@ describe GenomerPluginSummary::Sequences do
       end
     end
 
+    context "passed two sequences" do
+      let(:scaffold) do
+        [sequence('AAAGGG','contig1'),
+         sequence('AAAGGG','contig2')]
+      end
+
+      it do
+        should == [row('contig1', 1,  6, 50.0, 50.0),
+                   row('contig2', 7, 12, 50.0, 50.0)]
+      end
+    end
+
   end
 
   describe "#total" do
