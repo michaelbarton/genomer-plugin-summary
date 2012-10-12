@@ -74,20 +74,6 @@ describe GenomerPluginSummary::Gaps do
 
   describe "#determine_gaps" do
 
-    def sequence(seq)
-      s = mock!
-      stub(s).sequence{ seq }
-      stub(s).entry_type{ :sequence }
-      s
-    end
-
-    def unresolved(seq)
-      s = mock!
-      stub(s).sequence{ seq }
-      stub(s).entry_type{ :unresolved }
-      s
-    end
-
     subject do
       described_class.new([],{}).determine_gaps(scaffold)
     end
