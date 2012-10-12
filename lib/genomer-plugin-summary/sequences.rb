@@ -11,7 +11,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
   end
 
   def headings
-    ['Sequence'.left(12),
+    ['Sequence'.left(16),
      'Start (bp)'.center(10),
      'End (bp)'.center(10),
      'Size (bp)'.center(10),
