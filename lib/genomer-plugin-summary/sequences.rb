@@ -45,19 +45,44 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
   end
 
   def table_array(hash)
-    [:sequence,:start,:end,:size,:percent,:gc].map{|i| hash[i]}
+    [:sequence,:start,:end,:size,:percent,:gc].
+      map{|i| hash[i]}.
+      map{|i| i.class == Float ? sprintf('%#.2f',i) : i }
   end
 
   def calculate(scaffold)
-    []
+    length = 0
+    scaffold.reject{|i| i.entry_type == :unresolved}.map do |entry|
+
+      entry_length = entry.sequence.length
+      i = { :sequence => entry.source,
+            :start    => length + 1, 
+            :end      => length + entry_length,
+            :size     => entry_length,
+            :percent  => entry_length / (length + entry_length).to_f * 100,
+            :gc       => gc_content(entry.sequence) }
+      length += entry.sequence.length
+      i
+    end
   end
 
-  def total(sequences)
-    {:start   => 'NA',
-     :end     => 'NA',
-     :size    => 'NA',
-     :percent => 'NA',
-     :gc      => 'NA' }
+  def total(seqs)
+    return Hash[[:start, :end, :size, :percent, :gc].map{|i| [i, 'NA']}] if seqs.empty?
+
+    totals = seqs.inject({:size => 0, :percent => 0, :gc => 0}) do |hash,entry|
+      hash[:start]  ||= entry[:start]
+      hash[:end]      = entry[:end]
+      hash[:size]    += entry[:size]
+      hash[:percent] += entry[:percent]
+      hash[:gc]      += entry[:percent] / 100 * entry[:gc]
+
+      hash
+    end
+  end
+
+  def gc_content(sequence)
+    nucleotides = sequence.gsub(/[^ATGCatgc]/,'')
+    nucleotides.gsub(/[^GCgc]/,'').length.to_f / nucleotides.length * 100
   end
 
 end
