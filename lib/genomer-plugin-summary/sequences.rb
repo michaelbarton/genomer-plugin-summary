@@ -31,7 +31,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
         t << table_array(row)
       end
       t << :separator
-      t << table_array(total.merge({:sequence => 'Scaffold'}))
+      t << table_array(total.merge({:sequence => 'All'}))
     end
 
     table.align_column 0, :left
