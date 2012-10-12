@@ -164,6 +164,19 @@ describe GenomerPluginSummary::Sequences do
       end
     end
 
+    context "passed two sequences separated by a gap" do
+      let(:scaffold) do
+        [sequence('AAAGGG','contig1'),
+         unresolved('NNNNNNNN'),
+         sequence('AAAGGG','contig2')]
+      end
+
+      it do
+        should == [row('contig1', 1,  6,  30.0, 50.0),
+                   row('contig2', 15, 20, 30.0, 50.0)]
+      end
+    end
+
   end
 
   describe "#total" do
@@ -202,6 +215,21 @@ describe GenomerPluginSummary::Sequences do
       end
     end
 
+    context "passed two entries less than 100% of the scaffold" do
+      let(:sequences) do
+        [row('contig1', 1,  6,  30.0, 50.0),
+         row('contig2', 15, 20, 30.0, 50.0)]
+      end
+
+      it do
+        should == {
+          :start   => 1,
+          :end     => 20,
+          :size    => 12,
+          :percent => 60.0,
+          :gc      => 50.0 }
+      end
+    end
   end
 
 end

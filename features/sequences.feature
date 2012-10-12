@@ -128,3 +128,42 @@ Feature: Producing a summary of the scaffold sequences
       | Scaffold         |          1 |         12 |         12 |   100.00 |  66.67 |
       +------------------+------------+------------+------------+----------+--------+
       """
+
+  Scenario: A scaffold with a two sequences separated by a gap
+    Given I create a new genomer project
+      And I write to "assembly/scaffold.yml" with:
+      """
+      ---
+        -
+          sequence:
+            source: contig0001
+        -
+          unresolved:
+            length: 8
+        -
+          sequence:
+            source: contig0002
+      """
+      And I write to "assembly/sequence.fna" with:
+      """
+      >contig0001
+      ATGCGC
+      >contig0002
+      ATATGC
+      """
+     When I run `genomer summary sequences`
+     Then the exit status should be 0
+      And the output should contain:
+      """
+      +------------------+------------+------------+------------+----------+--------+
+      |                             Scaffold Sequences                              |
+      +------------------+------------+------------+------------+----------+--------+
+      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      +------------------+------------+------------+------------+----------+--------+
+      | contig0001       |          1 |          6 |          6 |    30.00 |  66.67 |
+      | contig0002       |         15 |         20 |          6 |    30.00 |  33.33 |
+      +------------------+------------+------------+------------+----------+--------+
+      | Scaffold         |          1 |         20 |         12 |    60.00 |  50.00 |
+      +------------------+------------+------------+------------+----------+--------+
+      """
+
