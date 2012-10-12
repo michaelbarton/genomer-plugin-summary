@@ -12,4 +12,20 @@ end
 
 RSpec.configure do |config|
   config.mock_with :rr
+
+  def sequence(seq, source=nil)
+    s = mock!
+    stub(s).sequence{ seq }
+    stub(s).source{ source } if source
+    stub(s).entry_type{ :sequence }
+    s
+  end
+
+  def unresolved(seq)
+    s = mock!
+    stub(s).sequence{ seq }
+    stub(s).entry_type{ :unresolved }
+    s
+  end
+
 end

@@ -6,7 +6,7 @@ describe GenomerPluginSummary::Gaps do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(contigs).to_s + "\n"
+      described_class.new([],{}).tabulate(contigs) + "\n"
     end
 
     context "passed an empty array" do
@@ -73,20 +73,6 @@ describe GenomerPluginSummary::Gaps do
   end
 
   describe "#determine_gaps" do
-
-    def sequence(seq)
-      s = mock!
-      stub(s).sequence{ seq }
-      stub(s).entry_type{ :sequence }
-      s
-    end
-
-    def unresolved(seq)
-      s = mock!
-      stub(s).sequence{ seq }
-      stub(s).entry_type{ :unresolved }
-      s
-    end
 
     subject do
       described_class.new([],{}).determine_gaps(scaffold)
