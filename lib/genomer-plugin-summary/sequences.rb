@@ -1,7 +1,9 @@
 require 'genomer'
+require 'genomer-plugin-summary/metrics'
 require 'terminal-table'
 
 class GenomerPluginSummary::Sequences < Genomer::Plugin
+  include GenomerPluginSummary::Metrics
 
   def run
     sequences = calculate(scaffold)
@@ -85,11 +87,6 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
     end
     totals[:gc] /= totals[:size]
     totals
-  end
-
-  def gc_content(sequence)
-    nucleotides = sequence.gsub(/[^ATGCatgc]/,'')
-    nucleotides.gsub(/[^GCgc]/,'').length.to_f / nucleotides.length * 100
   end
 
 end
