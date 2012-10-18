@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
   gem.version       = File.read 'VERSION'
 
   gem.add_dependency "genomer",        ">= 0.0.4"
+  gem.add_dependency "lazing",         ">= 0.1.1"
   gem.add_dependency "terminal-table", "~> 1.4.5"
 
   gem.add_development_dependency 'rake', '~> 0.9.0'
