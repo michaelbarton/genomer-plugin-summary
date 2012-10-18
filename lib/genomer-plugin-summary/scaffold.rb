@@ -1,19 +1,21 @@
 require 'genomer'
+require 'genomer-plugin-summary/metrics'
 require 'terminal-table'
 
 class GenomerPluginSummary::Scaffold < Genomer::Plugin
+  include GenomerPluginSummary::Metrics
 
   LAYOUT = [
-    {'Contigs (#)'  => :n_contigs},
-    {'Gaps (#)'     => :n_gaps},
+    {:name => 'Contigs (#)',  :entry_type => :sequence,   :method => :count},
+    {:name => 'Gaps (#)',     :entry_type => :unresolved, :method => :count},
     :separator,
-    {'Size (bp)'    => :bp_size},
-    {'Contigs (bp)' => :bp_contigs},
-    {'Gaps (bp)'    => :bp_gaps},
+    {:name => 'Size (bp)',    :entry_type => :all,        :method => :length},
+    {:name => 'Contigs (bp)', :entry_type => :sequence,   :method => :length},
+    {:name => 'Gaps (bp)',    :entry_type => :unresolved, :method => :length},
     :separator,
-    {'G+C (%)'      => :pc_gc},
-    {'Contigs (%)'  => :pc_contigs},
-    {'Gaps (%)'     => :pc_gaps}
+    {:name => 'G+C (%)',      :entry_type => :all,        :method => :gc_content},
+    {:name => 'Contigs (%)',  :entry_type => :sequence,   :method => :percent},
+    {:name => 'Gaps (%)',     :entry_type => :unresolved, :method => :percent}
   ]
 
   def title
@@ -22,22 +24,25 @@ class GenomerPluginSummary::Scaffold < Genomer::Plugin
 
   def tabulate(data)
     table = Terminal::Table.new(:title => title) do |t|
-      LAYOUT.each do |row|
-        t << if row == :separator
+      data.each do |(k,v)|
+        t << if k == :separator
                :separator
              else
-               key   = row.keys.first
-               value = data[row.values.first]
-               value = sprintf('%#.2f',value) if value.class == Float
-               [key,value.to_s.rjust(9)]
+               v = sprintf('%#.2f',v) if v.class == Float
+               [k.ljust(12),v.to_s.rjust(9)]
              end
       end
     end
 
     table.align_column 0, :left
     table.align_column 1, :right
-
     table.to_s
+  end
+
+  def calculate_metrics(specs,scaffold)
+    specs.map do |spec|
+      [spec[:name], send(spec[:method],spec[:entry_type],scaffold)]
+    end
   end
 
 end

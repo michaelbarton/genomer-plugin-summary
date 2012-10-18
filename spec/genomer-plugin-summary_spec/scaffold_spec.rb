@@ -12,14 +12,9 @@ describe GenomerPluginSummary::Scaffold do
     context "passed table data" do
 
       let(:data) do
-        {:n_contigs  =>   1,
-         :n_gaps     =>   0,
-         :bp_size    =>   4,
-         :bp_contigs =>   1,
-         :bp_gaps    =>   0,
-         :pc_gc      =>  50.0,
-         :pc_contigs => 100.0,
-         :pc_gaps    =>   0.0}
+        [['Contigs (#)',1.0],
+          :separator,
+         ['Gaps (#)',0]]
       end
 
       it do
@@ -27,20 +22,36 @@ describe GenomerPluginSummary::Scaffold do
       +--------------+-----------+
       |         Scaffold         |
       +--------------+-----------+
-      | Contigs (#)  |         1 |
+      | Contigs (#)  |      1.00 |
+      +--------------+-----------+
       | Gaps (#)     |         0 |
-      +--------------+-----------+
-      | Size (bp)    |         4 |
-      | Contigs (bp) |         1 |
-      | Gaps (bp)    |         0 |
-      +--------------+-----------+
-      | G+C (%)      |     50.00 |
-      | Contigs (%)  |    100.00 |
-      | Gaps (%)     |      0.00 |
       +--------------+-----------+
         EOS
       end
     end
+  end
+
+  describe "#calculate_metrics" do
+
+    subject do
+      described_class.new([],{}).calculate_metrics(specs,scaffold)
+    end
+
+    context "should calculate metrics for the scaffold" do
+
+      let(:scaffold) do
+        [sequence('ATGC')]
+      end
+
+      let(:specs) do
+        [{:name => 'Contigs (%)',  :entry_type => :sequence,   :method => :percent}]
+      end
+
+      it do
+        should == [['Contigs (%)',100.0]]
+      end
+    end
+
   end
 
 end
