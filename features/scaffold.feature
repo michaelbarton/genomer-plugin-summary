@@ -22,13 +22,13 @@ Feature: Producing a summary of the scaffold
       And the output should contain:
       """
       +--------------+-----------+
-      |        Scaffold          |
+      |         Scaffold         |
       +--------------+-----------+
       | Contigs (#)  |         1 |
       | Gaps (#)     |         0 |
       +--------------+-----------+
       | Size (bp)    |         4 |
-      | Contigs (bp) |         1 |
+      | Contigs (bp) |         4 |
       | Gaps (bp)    |         0 |
       +--------------+-----------+
       | G+C (%)      |     50.00 |

@@ -37,7 +37,7 @@ describe GenomerPluginSummary::Scaffold do
       described_class.new([],{}).calculate_metrics(specs,scaffold)
     end
 
-    context "should calculate metrics for the scaffold" do
+    context "should calculate a single metrics for the scaffold" do
 
       let(:scaffold) do
         [sequence('ATGC')]
@@ -49,6 +49,25 @@ describe GenomerPluginSummary::Scaffold do
 
       it do
         should == [['Contigs (%)',100.0]]
+      end
+    end
+
+    context "should calculate a single metrics with separators" do
+
+      let(:scaffold) do
+        [sequence('ATGC')]
+      end
+
+      let(:specs) do
+        [:separator,
+         {:name => 'Contigs (%)',  :entry_type => :sequence,   :method => :percent}]
+      end
+
+      it do
+        should == [
+          :separator,
+          ['Contigs (%)',100.0]
+        ]
       end
     end
 

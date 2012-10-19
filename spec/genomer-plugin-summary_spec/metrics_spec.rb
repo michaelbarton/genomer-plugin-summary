@@ -12,62 +12,64 @@ describe GenomerPluginSummary::Metrics do
   describe "#gc_content" do
 
     subject do
-      metric.gc_content sequence
+      metric.gc_content entry_type, scaffold
     end
 
-    context "an empty sequence" do
+    context "an empty scaffold" do
+      let(:scaffold){ [] }
 
-      let(:sequence) do
-        ''
+      context "contigs" do
+        let(:entry_type){ :sequence }
+        it{ should be_nan }
       end
-
-      it do
-        should be_nan
+      context "gaps" do
+        let(:entry_type){ :unresolved }
+        it{ should == be_nan }
       end
-
-    end
-
-    context "a single sequence" do
-
-      let(:sequence) do
-        'ATGC'
-      end
-
-      it do
-        should == 50.0
-        should be_instance_of Float
+      context "everything" do
+        let(:entry_type){ :all }
+        it{ should == be_nan }
       end
 
     end
 
-    context "a mixed case sequence" do
+    context "a single contig scaffold" do
+      let(:scaffold){ [sequence('ATGC')] }
 
-      let(:sequence) do
-        'ATGCgggg'
+      context "contigs" do
+        let(:entry_type){ :sequence }
+        it{ should == 50.0 }
       end
-
-      it do
-        should == 75.0
-        should be_instance_of Float
+      context "gaps" do
+        let(:entry_type){ :unresolved }
+        it{ should be_nan }
+      end
+      context "everything" do
+        let(:entry_type){ :all }
+        it{ should == 50.0 }
       end
 
     end
 
-    context "a sequence containing N" do
+    context "a mixed scaffold" do
+      let(:scaffold){ [sequence('ATGC'),unresolved('NNNN'),sequence('ATGC')] }
 
-      let(:sequence) do
-        'ATGCNN'
+      context "contigs" do
+        let(:entry_type){ :sequence }
+        it{ should == 50.0 }
       end
-
-      it do
-        should == 50.0
-        should be_instance_of Float
+      context "gaps" do
+        let(:entry_type){ :unresolved }
+        it{ should == be_nan }
+      end
+      context "everything" do
+        let(:entry_type){ :all }
+        it{ should == 50.0 }
       end
 
     end
 
   end
-
   describe "#count" do
 
     subject do

@@ -18,6 +18,10 @@ class GenomerPluginSummary::Scaffold < Genomer::Plugin
     {:name => 'Gaps (%)',     :entry_type => :unresolved, :method => :percent}
   ]
 
+  def run
+    tabulate calculate_metrics(LAYOUT, scaffold)
+  end
+
   def title
     'Scaffold'
   end
@@ -41,7 +45,11 @@ class GenomerPluginSummary::Scaffold < Genomer::Plugin
 
   def calculate_metrics(specs,scaffold)
     specs.map do |spec|
-      [spec[:name], send(spec[:method],spec[:entry_type],scaffold)]
+      if spec == :separator
+        spec
+      else
+        [spec[:name], send(spec[:method],spec[:entry_type],scaffold)]
+      end
     end
   end
 

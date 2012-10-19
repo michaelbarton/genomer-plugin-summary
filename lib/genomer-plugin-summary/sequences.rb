@@ -65,7 +65,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
               :end      => running_length + entry_length,
               :size     => entry_length,
               :percent  => entry_length / total_length * 100,
-              :gc       => gc_content(entry.sequence) }
+              :gc       => gc(entry) / atgc(entry) * 100 }
       end
         
       running_length += entry.sequence.length
