@@ -120,3 +120,39 @@ Feature: Producing a summary of the scaffold
       +--------------+-----------+
 
       """
+
+  Scenario: Generating CSV output
+    Given I create a new genomer project
+      And I write to "assembly/scaffold.yml" with:
+      """
+      ---
+        -
+          sequence:
+            source: contig0001
+        -
+          unresolved:
+            length: 5
+        -
+          sequence:
+            source: contig0002
+      """
+      And I write to "assembly/sequence.fna" with:
+      """
+      >contig0001
+      ATGC
+      >contig0002
+      GGGC
+      """
+     When I run `genomer summary scaffold --format=csv`
+     Then the exit status should be 0
+      And the output should contain:
+      """
+      contigs_#,2
+      gaps_#,1
+      size_bp,13
+      contigs_bp,8
+      gaps_bp,5
+      gc_%,75.00
+      contigs_%,61.54
+      gaps_%,38.46
+      """
