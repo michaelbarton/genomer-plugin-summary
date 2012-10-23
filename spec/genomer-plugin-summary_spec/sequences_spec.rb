@@ -15,7 +15,7 @@ describe GenomerPluginSummary::Sequences do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(sequences,total) + "\n"
+      described_class.new([],{}).tabulate(sequences,total)
     end
 
     context "passed an empty array" do
@@ -25,11 +25,11 @@ describe GenomerPluginSummary::Sequences do
       end
 
       let(:total) do
-        {:start   => 'NA',
-         :end     => 'NA',
-         :size    => 'NA',
-         :percent => 'NA',
-         :gc      => 'NA' }
+        {:start   => 0,
+         :end     => 0,
+         :size    => 0,
+         :percent => 0,
+         :gc      => 0 }
       end
 
       it do
@@ -37,10 +37,10 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       +------------------+------------+------------+------------+----------+--------+
-      | All              |         NA |         NA |         NA |       NA |     NA |
+      | All              |          0 |          0 |          0 |     0.00 |   0.00 |
       +------------------+------------+------------+------------+----------+--------+
         EOS
       end
@@ -71,7 +71,7 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       | contig1          |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
@@ -112,7 +112,7 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       | contig1          |          1 |          4 |          4 |   100.00 |  50.00 |
       | contig2          |          1 |          4 |          4 |   100.00 |  50.00 |
@@ -192,11 +192,11 @@ describe GenomerPluginSummary::Sequences do
 
       it do
         should == {
-          :start   => 'NA',
-          :end     => 'NA',
-          :size    => 'NA',
-          :percent => 'NA',
-          :gc      => 'NA' }
+          :start   => 0,
+          :end     => 0,
+          :size    => 0,
+          :percent => 0,
+          :gc      => 0 }
       end
     end
 
