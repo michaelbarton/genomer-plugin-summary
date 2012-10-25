@@ -5,7 +5,7 @@ class GenomerPluginSummary::Gaps < Genomer::Plugin
   include GenomerPluginSummary::Format
 
   def run
-    tabulate determine_gaps scaffold
+    tabulate(determine_gaps(scaffold),flags)
   end
 
   COLUMNS    = [:number,  :length,  :start,  :end,  :type]
@@ -29,8 +29,9 @@ class GenomerPluginSummary::Gaps < Genomer::Plugin
     }
   }
 
-  def tabulate(contigs)
-    table(contigs.map{|ctg| COLUMNS.map{|col| ctg[col]}},FORMATTING)
+  def tabulate(gaps,flags)
+    FORMATTING[:output] = flags[:output]
+    table(gaps.map{|gap| COLUMNS.map{|col| gap[col]}},FORMATTING)
   end
 
   def gap_locations(seq)

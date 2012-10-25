@@ -263,7 +263,7 @@ Feature: Producing a summary of the scaffold gaps
       >insert_1
       AAA
       """
-     When I run `genomer summary gaps --format=csv`
+     When I run `genomer summary gaps --output=csv`
      Then the exit status should be 0
       And the output should contain:
       """
