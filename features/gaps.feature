@@ -237,3 +237,37 @@ Feature: Producing a summary of the scaffold gaps
       |        2 |        5 |       11 |       15 |  unresolved  |
       +----------+----------+----------+----------+--------------+
       """
+
+  @disable-bundler
+  Scenario: Generating CSV output
+    Given I create a new genomer project
+      And I write to "assembly/scaffold.yml" with:
+      """
+      ---
+      -
+        sequence:
+          source: "contig00001"
+          inserts:
+          -
+            source: "insert_1"
+            open: 4
+            close: 5
+      -
+        unresolved:
+          length: 5
+      """
+      And I write to "assembly/sequence.fna" with:
+      """
+      >contig00001
+      ATGNNNATG
+      >insert_1
+      AAA
+      """
+     When I run `genomer summary gaps --output=csv`
+     Then the exit status should be 0
+      And the output should contain:
+      """
+      number,length,start,end,type
+      1,1,7,7,contig
+      2,5,11,15,unresolved
+      """

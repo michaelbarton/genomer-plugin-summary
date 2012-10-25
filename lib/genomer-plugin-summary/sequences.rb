@@ -1,55 +1,52 @@
 require 'genomer'
 require 'genomer-plugin-summary/metrics'
-require 'terminal-table'
+require 'genomer-plugin-summary/format'
 
 class GenomerPluginSummary::Sequences < Genomer::Plugin
   include GenomerPluginSummary::Metrics
+  include GenomerPluginSummary::Format
 
   def run
     sequences = calculate(scaffold)
     total     = total(sequences)
 
-    tabulate(sequences,total)
+    tabulate(sequences,total,flags)
   end
 
-  def headings
-    ['Sequence'.left(16),
-     'Start (bp)'.center(10),
-     'End (bp)'.center(10),
-     'Size (bp)'.center(10),
-     'Size (%)'.center(8),
-     'GC (%)'.center(6)]
-  end
+  COLUMNS    = [:sequence, :start, :end, :size, :percent, :gc]
 
-  def title
-    'Scaffold Sequences'
-  end
+  FORMATTING = {
+    :title   => 'Scaffold Sequences',
+    :headers => ['Sequence', 'Start (bp)', 'End (bp)', 'Size (bp)', 'Size (%)', 'GC (%)'],
+    :width => {
+      0 => 16,
+      1 => 10,
+      2 => 10,
+      3 => 10,
+      4 => 8,
+      5 => 6
+    },
+    :justification => {
+      0 => :left,
+      1 => :right,
+      2 => :right,
+      3 => :right,
+      4 => :right,
+      5 => :right
+    },
+    :format => {
+      4 => '%#.2f',
+      5 => '%#.2f'
+    }
+  }
 
-  def tabulate(rows,total)
-    table = Terminal::Table.new(:title => title) do |t|
-      t << headings
-      t << :separator
-      rows.each do |row|
-        t << table_array(row)
-      end
-      t << :separator
-      t << table_array(total.merge({:sequence => 'All'}))
-    end
+  def tabulate(sequences,total,flags)
+    rows = sequences.map{|sequence| COLUMNS.map{|col| sequence[col]}}.
+      <<(:separator).
+      <<(COLUMNS.map{|col| total[col] || 'All'})
 
-    table.align_column 0, :left
-    table.align_column 1, :right
-    table.align_column 2, :right
-    table.align_column 3, :right
-    table.align_column 4, :right
-    table.align_column 5, :right
-
-    table.to_s
-  end
-
-  def table_array(hash)
-    [:sequence,:start,:end,:size,:percent,:gc].
-      map{|i| hash[i]}.
-      map{|i| i.class == Float ? sprintf('%#.2f',i) : i }
+    FORMATTING[:output] = flags[:output]
+    table(rows,FORMATTING)
   end
 
   def calculate(scaffold)
@@ -74,7 +71,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
   end
 
   def total(seqs)
-    return Hash[[:start, :end, :size, :percent, :gc].map{|i| [i, 'NA']}] if seqs.empty?
+    return Hash[[:start, :end, :size, :percent, :gc].map{|i| [i, 0]}] if seqs.empty?
 
     totals = seqs.inject({:size => 0, :percent => 0, :gc => 0}) do |hash,entry|
       hash[:start]  ||= entry[:start]

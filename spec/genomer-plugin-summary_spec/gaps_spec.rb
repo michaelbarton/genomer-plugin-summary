@@ -6,12 +6,16 @@ describe GenomerPluginSummary::Gaps do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(contigs) + "\n"
+      described_class.new([],{}).tabulate(sequences,flags)
+    end
+
+    let(:flags) do
+      {}
     end
 
     context "passed an empty array" do
 
-      let(:contigs) do
+      let(:sequences) do
         []
       end
 
@@ -30,7 +34,7 @@ describe GenomerPluginSummary::Gaps do
 
     context "passed an array with one entry" do
 
-      let(:contigs) do
+      let(:sequences) do
         [{:number => 1, :length => 1, :start => 1, :end => 1, :type => :contig}]
       end
 
@@ -50,7 +54,7 @@ describe GenomerPluginSummary::Gaps do
 
     context "passed an array with two entries" do
 
-      let(:contigs) do
+      let(:sequences) do
         [{:number => 1, :length => 1, :start => 1, :end => 1, :type => :contig},
          {:number => 2, :length => 2, :start => 2, :end => 2, :type => :unresolved}]
       end
@@ -65,6 +69,27 @@ describe GenomerPluginSummary::Gaps do
           |        1 |        1 |        1 |        1 |    contig    |
           |        2 |        2 |        2 |        2 |  unresolved  |
           +----------+----------+----------+----------+--------------+
+        EOS
+      end
+
+    end
+
+    context "passed the csv option" do
+
+      let(:flags) do
+        {:output => 'csv'}
+      end
+
+      let(:sequences) do
+        [{:number => 1, :length => 1, :start => 1, :end => 1, :type => :contig},
+         {:number => 2, :length => 2, :start => 2, :end => 2, :type => :unresolved}]
+      end
+
+      it do
+        should ==<<-EOS.unindent!
+          number,length,start,end,type
+          1,1,1,1,contig
+          2,2,2,2,unresolved
         EOS
       end
 
@@ -104,7 +129,7 @@ describe GenomerPluginSummary::Gaps do
       end
     end
 
-    context "a scaffold with a two contigs containing gaps" do
+    context "a scaffold with a two sequences containing gaps" do
       let(:scaffold) do
         [sequence('AANNTT'), sequence('AANNTT')]
       end
@@ -116,7 +141,7 @@ describe GenomerPluginSummary::Gaps do
       end
     end
 
-    context "a scaffold with two contigs separated by an unresolved region" do
+    context "a scaffold with two sequences separated by an unresolved region" do
       let(:scaffold) do
         [sequence('AAT'),
          unresolved('NNNNNNNNNN'),
@@ -129,7 +154,7 @@ describe GenomerPluginSummary::Gaps do
       end
     end
 
-    context "a scaffold with a mixture of gapped contigs and unresolved regions" do
+    context "a scaffold with a mixture of gapped sequences and unresolved regions" do
       let(:scaffold) do
         [sequence('AAANNNTTT'),
          unresolved('NNNNNNNNNN'),

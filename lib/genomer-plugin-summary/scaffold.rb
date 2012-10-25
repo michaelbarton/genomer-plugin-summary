@@ -1,9 +1,10 @@
 require 'genomer'
 require 'genomer-plugin-summary/metrics'
-require 'terminal-table'
+require 'genomer-plugin-summary/format'
 
 class GenomerPluginSummary::Scaffold < Genomer::Plugin
   include GenomerPluginSummary::Metrics
+  include GenomerPluginSummary::Format
 
   LAYOUT = [
     {:name => 'Contigs (#)',  :entry_type => :sequence,   :method => :count},
@@ -18,29 +19,20 @@ class GenomerPluginSummary::Scaffold < Genomer::Plugin
     {:name => 'Gaps (%)',     :entry_type => :unresolved, :method => :percent}
   ]
 
+  FORMATTING = {
+    :title         => 'Scaffold',
+    :width         => {0 => 12, 1 => 9},
+    :justification => {1 => :right},
+    :format        => {1 => lambda{|i| i.class == Float ? sprintf('%#.2f',i) : i }}
+  }
+
   def run
-    tabulate calculate_metrics(LAYOUT, scaffold)
+    tabulate(calculate_metrics(LAYOUT, scaffold),flags)
   end
 
-  def title
-    'Scaffold'
-  end
-
-  def tabulate(data)
-    table = Terminal::Table.new(:title => title) do |t|
-      data.each do |(k,v)|
-        t << if k == :separator
-               :separator
-             else
-               v = sprintf('%#.2f',v) if v.class == Float
-               [k.ljust(12),v.to_s.rjust(9)]
-             end
-      end
-    end
-
-    table.align_column 0, :left
-    table.align_column 1, :right
-    table.to_s
+  def tabulate(data,flags)
+    FORMATTING.store(:output,flags[:output]) if flags[:output]
+    table(data,FORMATTING)
   end
 
   def calculate_metrics(specs,scaffold)

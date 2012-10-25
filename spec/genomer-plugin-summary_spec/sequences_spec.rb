@@ -15,7 +15,11 @@ describe GenomerPluginSummary::Sequences do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(sequences,total) + "\n"
+      described_class.new([],{}).tabulate(sequences,total,flags)
+    end
+
+    let(:flags) do
+      {}
     end
 
     context "passed an empty array" do
@@ -25,11 +29,11 @@ describe GenomerPluginSummary::Sequences do
       end
 
       let(:total) do
-        {:start   => 'NA',
-         :end     => 'NA',
-         :size    => 'NA',
-         :percent => 'NA',
-         :gc      => 'NA' }
+        {:start   => 0,
+         :end     => 0,
+         :size    => 0,
+         :percent => 0,
+         :gc      => 0 }
       end
 
       it do
@@ -37,10 +41,10 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       +------------------+------------+------------+------------+----------+--------+
-      | All              |         NA |         NA |         NA |       NA |     NA |
+      | All              |          0 |          0 |          0 |     0.00 |   0.00 |
       +------------------+------------+------------+------------+----------+--------+
         EOS
       end
@@ -71,7 +75,7 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       | contig1          |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
@@ -112,13 +116,53 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       | contig1          |          1 |          4 |          4 |   100.00 |  50.00 |
       | contig2          |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
       | All              |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
+        EOS
+      end
+
+    end
+
+    context "passed the csv output option" do
+
+      let(:flags) do
+        {:output => 'csv'}
+      end
+
+      let(:sequences) do
+        [{:sequence   => 'contig1',
+          :start      => '1',
+          :end        => '4',
+          :size       => '4',
+          :percent    => 100.0,
+          :gc         => 50.0 },
+         {:sequence   => 'contig2',
+          :start      => '1',
+          :end        => '4',
+          :size       => '4',
+          :percent    => 100.0,
+          :gc         => 50.0 }]
+      end
+
+      let(:total) do
+        {:start   => '1',
+         :end     => '4',
+         :size    => '4',
+         :percent => 100.0,
+         :gc      => 50.0 }
+      end
+
+      it do
+        should ==<<-EOS.unindent!
+          sequence,start_bp,end_bp,size_bp,size_%,gc_%
+          contig1,1,4,4,100.00,50.00
+          contig2,1,4,4,100.00,50.00
+          all,1,4,4,100.00,50.00
         EOS
       end
 
@@ -192,11 +236,11 @@ describe GenomerPluginSummary::Sequences do
 
       it do
         should == {
-          :start   => 'NA',
-          :end     => 'NA',
-          :size    => 'NA',
-          :percent => 'NA',
-          :gc      => 'NA' }
+          :start   => 0,
+          :end     => 0,
+          :size    => 0,
+          :percent => 0,
+          :gc      => 0 }
       end
     end
 
