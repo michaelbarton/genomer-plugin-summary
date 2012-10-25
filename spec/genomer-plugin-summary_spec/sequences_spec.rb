@@ -15,7 +15,11 @@ describe GenomerPluginSummary::Sequences do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(sequences,total)
+      described_class.new([],{}).tabulate(sequences,total,flags)
+    end
+
+    let(:flags) do
+      {}
     end
 
     context "passed an empty array" do
@@ -119,6 +123,46 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       | All              |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
+        EOS
+      end
+
+    end
+
+    context "passed the csv output option" do
+
+      let(:flags) do
+        {:output => 'csv'}
+      end
+
+      let(:sequences) do
+        [{:sequence   => 'contig1',
+          :start      => '1',
+          :end        => '4',
+          :size       => '4',
+          :percent    => 100.0,
+          :gc         => 50.0 },
+         {:sequence   => 'contig2',
+          :start      => '1',
+          :end        => '4',
+          :size       => '4',
+          :percent    => 100.0,
+          :gc         => 50.0 }]
+      end
+
+      let(:total) do
+        {:start   => '1',
+         :end     => '4',
+         :size    => '4',
+         :percent => 100.0,
+         :gc      => 50.0 }
+      end
+
+      it do
+        should ==<<-EOS.unindent!
+          sequence,start_bp,end_bp,size_bp,size_%,gc_%
+          contig1,1,4,4,100.00,50.00
+          contig2,1,4,4,100.00,50.00
+          all,1,4,4,100.00,50.00
         EOS
       end
 

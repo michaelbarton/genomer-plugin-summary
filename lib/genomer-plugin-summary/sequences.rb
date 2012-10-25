@@ -1,7 +1,6 @@
 require 'genomer'
 require 'genomer-plugin-summary/metrics'
 require 'genomer-plugin-summary/format'
-require 'terminal-table'
 
 class GenomerPluginSummary::Sequences < Genomer::Plugin
   include GenomerPluginSummary::Metrics
@@ -11,10 +10,10 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
     sequences = calculate(scaffold)
     total     = total(sequences)
 
-    tabulate(sequences,total)
+    tabulate(sequences,total,flags)
   end
 
-  COLUMNS    = [:sequence,  :start,  :end,  :size,  :percent, :gc]
+  COLUMNS    = [:sequence, :start, :end, :size, :percent, :gc]
 
   FORMATTING = {
     :title   => 'Scaffold Sequences',
@@ -41,11 +40,12 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
     }
   }
 
-  def tabulate(sequences,total)
+  def tabulate(sequences,total,flags)
     rows = sequences.map{|sequence| COLUMNS.map{|col| sequence[col]}}.
       <<(:separator).
       <<(COLUMNS.map{|col| total[col] || 'All'})
 
+    FORMATTING[:output] = flags[:output]
     table(rows,FORMATTING)
   end
 

@@ -266,7 +266,7 @@ Feature: Producing a summary of the scaffold sequences
       >contig0002
       ATATGC
       """
-     When I run `genomer summary sequences --format=csv`
+     When I run `genomer summary sequences --output=csv`
      Then the exit status should be 0
       And the output should contain:
       """
