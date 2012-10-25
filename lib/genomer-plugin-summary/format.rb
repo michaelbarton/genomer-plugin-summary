@@ -9,6 +9,29 @@ module GenomerPluginSummary::Format
     :format        => {}
   }
 
+  def table(data,opts = {})
+    opts = DEFAULTS.merge opts
+    case opts[:output]
+    when 'csv' then csv(data,opts)
+    else            pretty(data,opts)
+    end
+  end
+
+  def create_cells(data,opts)
+    data.map do |row|
+      if row == :separator
+        :separator
+      else
+        row.each_with_index.map do |cell,index|
+          format_cell(cell,
+                      opts[:width][index],
+                      opts[:justification][index],
+                      opts[:format][index])
+        end
+      end
+    end
+  end
+
   def format_cell(cell,width,justification,format = nil)
     formatted = case format
                 when String  then sprintf(format,cell)
@@ -25,21 +48,25 @@ module GenomerPluginSummary::Format
     end
   end
 
-  def table(data,opts = {})
-    opts = DEFAULTS.merge opts
+  def csv(data,opts)
+    opts[:width] = {}
+    opts[:justification] = {}
 
-    cells = data.map do |row|
-      if row == :separator
-        row
-      else
-        row.each_with_index.map do |cell,index|
-          format_cell(cell,
-                      opts[:width][index],
-                      opts[:justification][index],
-                      opts[:format][index])
-        end
-      end
-    end
+    cells = create_cells(data,opts)
+
+    cells.unshift opts[:headers] if opts[:headers]
+
+    cells.compact.
+      rejecting{|i| i == :separator}.
+      mapping{|i| i.join(',')}.
+      mapping{|i| i.gsub(' ','_')}.
+      mapping{|i| i.gsub(/[()]/,'')}.
+      mapping{|i| i.downcase}.
+      to_a. join("\n") + "\n"
+  end
+
+  def pretty(data,opts)
+    cells = create_cells(data,opts)
 
     if opts[:headers]
       cells.unshift :separator

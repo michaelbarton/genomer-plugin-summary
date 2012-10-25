@@ -6,12 +6,10 @@ describe GenomerPluginSummary::Format do
   subject do
     o = Object.new
     o.extend described_class
-    o.send(method,data,options)
+    o.table(data,options.merge(:output => output))
   end
 
   describe "#table" do
-
-    let(:method){ :table }
 
     let(:data) do
       [['Contigs (#)',1.0],
@@ -19,31 +17,37 @@ describe GenomerPluginSummary::Format do
         ['Gaps (#)',0]]
     end
 
-    context "passed data without any options" do
+    context "passed no output option" do
 
-      let(:options) do
-        {}
+      let(:output) do
+        nil
       end
 
-      it do
-        should ==<<-EOS.unindent!
-      +-------------+-----+
-      | Contigs (#) | 1.0 |
-      +-------------+-----+
-      | Gaps (#)    | 0   |
-      +-------------+-----+
-        EOS
+      context "without any addtional options" do
+
+        let(:options) do
+          {}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
+        +-------------+-----+
+        | Contigs (#) | 1.0 |
+        +-------------+-----+
+        | Gaps (#)    | 0   |
+        +-------------+-----+
+          EOS
+        end
       end
-    end
 
-    context "passed data with a header option" do
+      context "the header option" do
 
-      let(:options) do
-        {:title => 'Scaffold' }
-      end
+        let(:options) do
+          {:title => 'Scaffold' }
+        end
 
-      it do
-        should ==<<-EOS.unindent!
+        it do
+          should ==<<-EOS.unindent!
       +-------------+-----+
       |     Scaffold      |
       +-------------+-----+
@@ -51,94 +55,94 @@ describe GenomerPluginSummary::Format do
       +-------------+-----+
       | Gaps (#)    | 0   |
       +-------------+-----+
-        EOS
+          EOS
+        end
+
       end
 
-    end
+      context "with the justification option" do
 
-    context "passed data with justification options" do
+        let(:options) do
+          {:justification => {
+            0 => :left,
+            1 => :right
+          }}
+        end
 
-      let(:options) do
-        {:justification => {
-          0 => :left,
-          1 => :right
-        }}
-      end
-
-      it do
-        should ==<<-EOS.unindent!
+        it do
+          should ==<<-EOS.unindent!
       +-------------+-----+
       | Contigs (#) | 1.0 |
       +-------------+-----+
       | Gaps (#)    |   0 |
       +-------------+-----+
-        EOS
-      end
-    end
-
-    context "passed a width option" do
-
-      let(:options) do
-        {:width         => { 0 => 15, 1 => 10 },
-         :justification => { 1 => :right }}
+          EOS
+        end
       end
 
-      it do
-        should ==<<-EOS.unindent!
+      context "with the width option" do
+
+        let(:options) do
+          {:width         => { 0 => 15, 1 => 10 },
+            :justification => { 1 => :right }}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
       +-----------------+------------+
       | Contigs (#)     |        1.0 |
       +-----------------+------------+
       | Gaps (#)        |          0 |
       +-----------------+------------+
-        EOS
+          EOS
+        end
+
       end
 
-    end
+      context "with the format option" do
 
-    context "passed a format option" do
+        let(:options) do
+          {:format => { 1 => '%#.2f'}}
+        end
 
-      let(:options) do
-        {:format => { 1 => '%#.2f'}}
-      end
-
-      it do
-        should ==<<-EOS.unindent!
+        it do
+          should ==<<-EOS.unindent!
       +-------------+------+
       | Contigs (#) | 1.00 |
       +-------------+------+
       | Gaps (#)    | 0.00 |
       +-------------+------+
-        EOS
+          EOS
+        end
+
       end
 
-    end
+      context "with the format option as a lambda" do
 
-    context "passed a format option with a lambda" do
+        let(:options) do
+          {:format => { 1 => lambda{|i| i.class == Float ? sprintf('%#.2f',i) : i }}}
+        end
 
-      let(:options) do
-        {:format => { 1 => lambda{|i| i.class == Float ? sprintf('%#.2f',i) : i }}}
-      end
-
-      it do
-        should ==<<-EOS.unindent!
+        it do
+          should ==<<-EOS.unindent!
       +-------------+------+
       | Contigs (#) | 1.00 |
       +-------------+------+
       | Gaps (#)    | 0    |
       +-------------+------+
-        EOS
+          EOS
+        end
+
       end
 
-    end
+      context "with the header option" do
 
-    context "passed a header option" do
+        let(:options) do
+          {:headers => ['One','Two']}
+        end
 
-      let(:options) do
-        {:headers => ['One','Two']}
-      end
-
-      it do
-        should ==<<-EOS.unindent!
+        it do
+          should ==<<-EOS.unindent!
       +-------------+-----+
       |     One     | Two |
       +-------------+-----+
@@ -146,12 +150,12 @@ describe GenomerPluginSummary::Format do
       +-------------+-----+
       | Gaps (#)    | 0   |
       +-------------+-----+
-        EOS
+          EOS
+        end
+
       end
 
-    end
-
-    context "passed a header option with width but no data" do
+    context "with the header and width options but no data" do
 
       let(:options) do
         {:headers => ['One','Two'],
@@ -169,6 +173,109 @@ describe GenomerPluginSummary::Format do
       +-----------------+------------+
       +-----------------+------------+
         EOS
+      end
+
+    end
+
+  end
+
+    context "passed the csv output option" do
+
+      let(:output) do
+        'csv'
+      end
+
+      context "without any additional options" do
+
+        let(:options) do
+          {}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
+            contigs_#,1.0
+            gaps_#,0
+          EOS
+        end
+      end
+
+      context "with the justification option" do
+
+        let(:options) do
+          {:justification => {
+            0 => :left,
+            1 => :right
+          }}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
+            contigs_#,1.0
+            gaps_#,0
+          EOS
+        end
+      end
+
+      context "with the width option" do
+
+        let(:options) do
+          {:width         => { 0 => 15, 1 => 10 },
+           :justification => { 1 => :right }}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
+            contigs_#,1.0
+            gaps_#,0
+          EOS
+        end
+
+      end
+
+      context "with the header option" do
+
+        let(:options) do
+          {:headers => ['One','Two']}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
+            one,two
+            contigs_#,1.0
+            gaps_#,0
+          EOS
+        end
+
+      end
+
+      context "with the format option" do
+
+        let(:options) do
+          {:format => { 1 => '%#.2f'}}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
+            contigs_#,1.00
+            gaps_#,0.00
+          EOS
+        end
+
+      end
+
+      context "with the format option as a lambda" do
+
+        let(:options) do
+          {:format => { 1 => lambda{|i| i.class == Float ? sprintf('%#.2f',i) : i }}}
+        end
+
+        it do
+          should ==<<-EOS.unindent!
+            contigs_#,1.00
+            gaps_#,0
+          EOS
+        end
+
       end
 
     end

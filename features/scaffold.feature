@@ -143,7 +143,7 @@ Feature: Producing a summary of the scaffold
       >contig0002
       GGGC
       """
-     When I run `genomer summary scaffold --format=csv`
+     When I run `genomer summary scaffold --output=csv`
      Then the exit status should be 0
       And the output should contain:
       """
@@ -152,7 +152,7 @@ Feature: Producing a summary of the scaffold
       size_bp,13
       contigs_bp,8
       gaps_bp,5
-      gc_%,75.00
+      g+c_%,75.00
       contigs_%,61.54
       gaps_%,38.46
       """

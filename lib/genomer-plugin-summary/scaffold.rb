@@ -27,10 +27,11 @@ class GenomerPluginSummary::Scaffold < Genomer::Plugin
   }
 
   def run
-    tabulate calculate_metrics(LAYOUT, scaffold)
+    tabulate(calculate_metrics(LAYOUT, scaffold),flags)
   end
 
-  def tabulate(data)
+  def tabulate(data,flags)
+    FORMATTING.store(:output,flags[:output]) if flags[:output]
     table(data,FORMATTING)
   end
 
