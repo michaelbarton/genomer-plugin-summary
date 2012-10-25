@@ -4,9 +4,10 @@ require 'genomer-plugin-summary/sequences'
 describe GenomerPluginSummary::Sequences do
 
   def row(name,start,stop,percent,gc)
-    {:sequence => name,
+    {:id       => name,
+     :type     => :sequence,
      :start    => start,
-     :end      => stop,
+     :stop     => stop,
      :size     => (stop - start) + 1,
      :percent  => percent,
      :gc       => gc}
@@ -30,7 +31,7 @@ describe GenomerPluginSummary::Sequences do
 
       let(:total) do
         {:start   => 0,
-         :end     => 0,
+         :stop    => 0,
          :size    => 0,
          :percent => 0,
          :gc      => 0 }
@@ -54,17 +55,12 @@ describe GenomerPluginSummary::Sequences do
     context "passed an array with a single row" do
 
       let(:sequences) do
-        [{:sequence   => 'contig1',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 }]
+        [row('contig1',1,4,100.0,50.0)]
       end
 
       let(:total) do
         {:start   => '1',
-         :end     => '4',
+         :stop    => '4',
          :size    => '4',
          :percent => 100.0,
          :gc      => 50.0 }
@@ -89,23 +85,13 @@ describe GenomerPluginSummary::Sequences do
     context "passed a array with two rows" do
 
       let(:sequences) do
-        [{:sequence   => 'contig1',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 },
-         {:sequence   => 'contig2',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 }]
+        [row('contig1',1,4,100.0,50.0),
+         row('contig2',1,4,100.0,50.0)]
       end
 
       let(:total) do
         {:start   => '1',
-         :end     => '4',
+         :stop    => '4',
          :size    => '4',
          :percent => 100.0,
          :gc      => 50.0 }
@@ -135,23 +121,13 @@ describe GenomerPluginSummary::Sequences do
       end
 
       let(:sequences) do
-        [{:sequence   => 'contig1',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 },
-         {:sequence   => 'contig2',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 }]
+        [row('contig1',1,4,100.0,50.0),
+         row('contig2',1,4,100.0,50.0)]
       end
 
       let(:total) do
         {:start   => '1',
-         :end     => '4',
+         :stop    => '4',
          :size    => '4',
          :percent => 100.0,
          :gc      => 50.0 }
@@ -237,7 +213,7 @@ describe GenomerPluginSummary::Sequences do
       it do
         should == {
           :start   => 0,
-          :end     => 0,
+          :stop    => 0,
           :size    => 0,
           :percent => 0,
           :gc      => 0 }
@@ -252,7 +228,7 @@ describe GenomerPluginSummary::Sequences do
       it do
         should == {
           :start   => 1,
-          :end     => 6,
+          :stop    => 6,
           :size    => 6,
           :percent => 100.0,
           :gc      => 50.0 }
@@ -268,7 +244,7 @@ describe GenomerPluginSummary::Sequences do
       it do
         should == {
           :start   => 1,
-          :end     => 20,
+          :stop    => 20,
           :size    => 12,
           :percent => 60.0,
           :gc      => 50.0 }
