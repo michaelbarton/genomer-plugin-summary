@@ -1,0 +1,2 @@
+module GenomerPluginSummary::Enumerators
+end
