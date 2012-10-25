@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'genomer-plugin-summary/scaffold'
+require 'genomer-plugin-summary/genome'
 
-describe GenomerPluginSummary::Scaffold do
+describe GenomerPluginSummary::Genome do
 
   describe "#tabulate" do
 

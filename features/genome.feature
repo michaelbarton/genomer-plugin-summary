@@ -1,7 +1,7 @@
-Feature: Producing a summary of the scaffold
-  In order to have an overview of the scaffold
-  A user can use the "scaffod" command
-  to generate the a tabular output of the scaffold
+Feature: Producing a summary of the genome
+  In order to have an overview of the genome
+  A user can use the "genome" command
+  to generate the a tabular output of the genome
 
   Scenario: A scaffold with a single sequence
     Given I create a new genomer project
@@ -17,7 +17,7 @@ Feature: Producing a summary of the scaffold
       >contig0001
       ATGC
       """
-     When I run `genomer summary scaffold`
+     When I run `genomer summary genome`
      Then the exit status should be 0
       And the output should contain:
       """
@@ -57,7 +57,7 @@ Feature: Producing a summary of the scaffold
       >contig0002
       GGGC
       """
-     When I run `genomer summary scaffold`
+     When I run `genomer summary genome`
      Then the exit status should be 0
       And the output should contain:
       """
@@ -100,7 +100,7 @@ Feature: Producing a summary of the scaffold
       >contig0002
       GGGC
       """
-     When I run `genomer summary scaffold`
+     When I run `genomer summary genome`
      Then the exit status should be 0
       And the output should contain:
       """
@@ -143,7 +143,7 @@ Feature: Producing a summary of the scaffold
       >contig0002
       GGGC
       """
-     When I run `genomer summary scaffold --output=csv`
+     When I run `genomer summary genome --output=csv`
      Then the exit status should be 0
       And the output should contain:
       """

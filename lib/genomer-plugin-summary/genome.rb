@@ -2,7 +2,7 @@ require 'genomer'
 require 'genomer-plugin-summary/metrics'
 require 'genomer-plugin-summary/format'
 
-class GenomerPluginSummary::Scaffold < Genomer::Plugin
+class GenomerPluginSummary::Genome < Genomer::Plugin
   include GenomerPluginSummary::Metrics
   include GenomerPluginSummary::Format
 
