@@ -5,6 +5,7 @@ require 'genomer-plugin-summary/format'
 class GenomerPluginSummary::Sequences < Genomer::Plugin
   include GenomerPluginSummary::Metrics
   include GenomerPluginSummary::Format
+  include GenomerPluginSummary::Enumerators
 
   def run
     sequences = calculate(scaffold)
@@ -62,7 +63,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
               :end      => running_length + entry_length,
               :size     => entry_length,
               :percent  => entry_length / total_length * 100,
-              :gc       => gc(entry) / atgc(entry) * 100 }
+              :gc       => gc(entry.sequence) / atgc(entry.sequence) * 100 }
       end
         
       running_length += entry.sequence.length
