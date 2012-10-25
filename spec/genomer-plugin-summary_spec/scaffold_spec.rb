@@ -6,7 +6,7 @@ describe GenomerPluginSummary::Scaffold do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(data) + "\n"
+      described_class.new([],{}).tabulate(data)
     end
 
     context "passed table data" do

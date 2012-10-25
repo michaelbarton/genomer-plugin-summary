@@ -10,7 +10,12 @@ module GenomerPluginSummary::Format
   }
 
   def format_cell(cell,width,justification,format = nil)
-    formatted = format.nil? ? cell.to_s : sprintf(format,cell)
+    formatted = case format
+                when String  then sprintf(format,cell)
+                when Proc    then format.call(cell).to_s
+                when nil     then cell.to_s
+                end
+
     return formatted if width.nil?
 
     case justification

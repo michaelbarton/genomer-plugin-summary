@@ -113,6 +113,24 @@ describe GenomerPluginSummary::Format do
 
     end
 
+    context "passed a format option with a lambda" do
+
+      let(:options) do
+        {:format => { 1 => lambda{|i| i.class == Float ? sprintf('%#.2f',i) : i }}}
+      end
+
+      it do
+        should ==<<-EOS.unindent!
+      +-------------+------+
+      | Contigs (#) | 1.00 |
+      +-------------+------+
+      | Gaps (#)    | 0    |
+      +-------------+------+
+        EOS
+      end
+
+    end
+
     context "passed a header option" do
 
       let(:options) do
