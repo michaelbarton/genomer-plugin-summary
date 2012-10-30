@@ -36,4 +36,20 @@ module GenomerPluginSummary::Metrics
     sequence.gsub(/[^ATGCatgc]/,'').length.to_f
   end
 
+  def sequence_total(seqs)
+    return Hash[[:start, :stop, :size, :percent, :gc].map{|i| [i, 0]}] if seqs.empty?
+
+    totals = seqs.inject({:size => 0, :percent => 0, :gc => 0}) do |hash,entry|
+      hash[:start]  ||= entry[:start]
+      hash[:stop]     = entry[:stop]
+      hash[:size]    += entry[:size]
+      hash[:percent] += entry[:percent]
+      hash[:gc]      += entry[:gc] * entry[:size]
+
+      hash
+    end
+    totals[:gc] /= totals[:size]
+    totals
+  end
+
 end

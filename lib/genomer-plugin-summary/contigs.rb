@@ -34,6 +34,13 @@ class GenomerPluginSummary::Contigs < Genomer::Plugin
   }
   COLUMNS = [:num, :start, :stop, :size, :percent, :gc]
 
+  def run
+    contigs = calculate(scaffold)
+    total   = sequence_total(contigs)
+
+    tabulate(contigs,total,flags)
+  end
+
   def tabulate(contigs,total,flags)
     rows = contigs.map{|contig| COLUMNS.map{|col| contig[col]}}.
       <<(:separator).

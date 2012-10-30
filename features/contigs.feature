@@ -23,12 +23,12 @@ Feature: Producing a summary of the scaffold contigs
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
       +--------+------------+------------+------------+----------+--------+
-      | All    |          0 |          0 |          0 |     0.00 |   0.00 |
+      |    All |          0 |          0 |          0 |     0.00 |   0.00 |
       +--------+------------+------------+------------+----------+--------+
       """
 
@@ -51,7 +51,7 @@ Feature: Producing a summary of the scaffold contigs
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
@@ -80,12 +80,12 @@ Feature: Producing a summary of the scaffold contigs
       >contig0002
       ATATGC
       """
-     When I run `genomer summary contig`
+     When I run `genomer summary contigs`
      Then the exit status should be 0
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
@@ -118,7 +118,7 @@ Feature: Producing a summary of the scaffold contigs
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
@@ -156,7 +156,7 @@ Feature: Producing a summary of the scaffold contigs
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
@@ -194,7 +194,7 @@ Feature: Producing a summary of the scaffold contigs
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
@@ -232,7 +232,7 @@ Feature: Producing a summary of the scaffold contigs
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
@@ -270,7 +270,7 @@ Feature: Producing a summary of the scaffold contigs
       And the output should contain:
       """
       +--------+------------+------------+------------+----------+--------+
-      |                        Scaffold Contigs                           |
+      |                         Scaffold Contigs                          |
       +--------+------------+------------+------------+----------+--------+
       | Contig | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +--------+------------+------------+------------+----------+--------+
@@ -311,6 +311,6 @@ Feature: Producing a summary of the scaffold contigs
       """
       contig,start_bp,end_bp,size_bp,size_%,gc_%
       1,1,6,6,30.00,66.67
-      1,7,12,6,30.00,33.33
+      2,7,12,6,30.00,33.33
       all,1,12,12,60.00,50.00
       """
