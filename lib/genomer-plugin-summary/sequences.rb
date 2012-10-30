@@ -9,7 +9,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
 
   def run
     sequences = calculate(scaffold)
-    total     = total(sequences)
+    total     = sequence_total(sequences)
 
     tabulate(sequences,total,flags)
   end
@@ -61,22 +61,6 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
       entry[:percent] = sequence.length / total_length * 100
       entry
     end.to_a
-  end
-
-  def total(seqs)
-    return Hash[[:start, :stop, :size, :percent, :gc].map{|i| [i, 0]}] if seqs.empty?
-
-    totals = seqs.inject({:size => 0, :percent => 0, :gc => 0}) do |hash,entry|
-      hash[:start]  ||= entry[:start]
-      hash[:stop]     = entry[:stop]
-      hash[:size]    += entry[:size]
-      hash[:percent] += entry[:percent]
-      hash[:gc]      += entry[:gc] * entry[:size]
-
-      hash
-    end
-    totals[:gc] /= totals[:size]
-    totals
   end
 
 end
