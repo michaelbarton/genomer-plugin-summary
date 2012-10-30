@@ -144,4 +144,68 @@ describe GenomerPluginSummary::Contigs do
     end
 
   end
+
+  describe "#calculate" do
+
+    subject do
+      described_class.new([],{}).calculate(scaffold)
+    end
+
+    context "passed an empty array" do
+      let(:scaffold) do
+        []
+      end
+
+      it do
+        should == []
+      end
+    end
+
+    context "passed one sequence" do
+      let(:scaffold) do
+        [sequence('AAAGGG','contig1')]
+      end
+
+      it do
+        should == [row(1,1,6,100.0,50.0)]
+      end
+    end
+
+    context "passed two sequences" do
+      let(:scaffold) do
+        [sequence('AAAGGG','contig1'),
+         sequence('AAAGGG','contig2')]
+      end
+
+      it do
+        should == [row(1, 1,  6, 50.0, 50.0),
+                   row(2, 7, 12, 50.0, 50.0)]
+      end
+    end
+
+    context "passed two sequences separated by a gap" do
+      let(:scaffold) do
+        [sequence('AAAGGG','contig1'),
+         unresolved('NNNNNNNN'),
+         sequence('AAAGGG','contig2')]
+      end
+
+      it do
+        should == [row(1, 1,  6,  30.0, 50.0),
+                   row(2, 15, 20, 30.0, 50.0)]
+      end
+    end
+
+    context "passed one contig containing a gap" do
+      let(:scaffold) do
+        [sequence('AAAGGGNNNNNNNNAAAGGG','contig1')]
+      end
+
+      it do
+        should == [row(1, 1,  6,  30.0, 50.0),
+                   row(2, 15, 20, 30.0, 50.0)]
+      end
+    end
+
+  end
 end
