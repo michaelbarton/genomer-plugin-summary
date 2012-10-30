@@ -5,6 +5,7 @@ require 'genomer-plugin-summary/format'
 class GenomerPluginSummary::Sequences < Genomer::Plugin
   include GenomerPluginSummary::Metrics
   include GenomerPluginSummary::Format
+  include GenomerPluginSummary::Enumerators
 
   def run
     sequences = calculate(scaffold)
@@ -13,7 +14,7 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
     tabulate(sequences,total,flags)
   end
 
-  COLUMNS    = [:sequence, :start, :end, :size, :percent, :gc]
+  COLUMNS    = [:id, :start, :stop, :size, :percent, :gc]
 
   FORMATTING = {
     :title   => 'Scaffold Sequences',
@@ -50,32 +51,24 @@ class GenomerPluginSummary::Sequences < Genomer::Plugin
   end
 
   def calculate(scaffold)
-    total_length   = length(:all,scaffold).to_f
-    running_length = 0
+    total_length   = scaffold.mapping(&:sequence).mapping(&:length).inject(&:+).to_f
 
-    scaffold.map do |entry|
-      i = nil
-      if entry.entry_type != :unresolved
-        entry_length = entry.sequence.length
-        i = { :sequence => entry.source,
-              :start    => running_length + 1,
-              :end      => running_length + entry_length,
-              :size     => entry_length,
-              :percent  => entry_length / total_length * 100,
-              :gc       => gc(entry) / atgc(entry) * 100 }
-      end
-        
-      running_length += entry.sequence.length
-      i
-    end.compact
+    enumerator_for(:sequence,scaffold).mapping do |entry|
+      sequence = entry.delete(:sequence)
+
+      entry[:size]    = sequence.length
+      entry[:gc]      = gc(sequence) / atgc(sequence) * 100
+      entry[:percent] = sequence.length / total_length * 100
+      entry
+    end.to_a
   end
 
   def total(seqs)
-    return Hash[[:start, :end, :size, :percent, :gc].map{|i| [i, 0]}] if seqs.empty?
+    return Hash[[:start, :stop, :size, :percent, :gc].map{|i| [i, 0]}] if seqs.empty?
 
     totals = seqs.inject({:size => 0, :percent => 0, :gc => 0}) do |hash,entry|
       hash[:start]  ||= entry[:start]
-      hash[:end]      = entry[:end]
+      hash[:stop]     = entry[:stop]
       hash[:size]    += entry[:size]
       hash[:percent] += entry[:percent]
       hash[:gc]      += entry[:gc] * entry[:size]

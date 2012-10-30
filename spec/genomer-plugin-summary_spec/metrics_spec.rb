@@ -70,6 +70,7 @@ describe GenomerPluginSummary::Metrics do
     end
 
   end
+
   describe "#count" do
 
     subject do

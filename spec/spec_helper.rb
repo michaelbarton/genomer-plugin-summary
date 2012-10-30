@@ -16,7 +16,7 @@ RSpec.configure do |config|
   def sequence(seq, source=nil)
     s = mock!
     stub(s).sequence{ seq }
-    stub(s).source{ source } if source
+    stub(s).source{ source }
     stub(s).entry_type{ :sequence }
     s
   end
