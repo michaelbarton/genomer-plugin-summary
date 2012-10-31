@@ -32,7 +32,7 @@ class GenomerPluginSummary::Contigs < Genomer::Plugin
       5 => '%#.2f'
     }
   }
-  COLUMNS = [:num, :start, :stop, :size, :percent, :gc]
+  COLUMNS = [:id, :start, :stop, :size, :percent, :gc]
 
   def run
     contigs = calculate(scaffold)
@@ -52,32 +52,12 @@ class GenomerPluginSummary::Contigs < Genomer::Plugin
 
   def calculate(scaffold)
     total_length = scaffold.mapping(&:sequence).mapping(&:length).inject(&:+).to_f
-    contig_no    = 0
-    position     = 1
-
-    enumerator_for_all(scaffold).mapping do |s|
-      regions = s[:sequence].
-        gsub(/([^Nn])([Nn])/,'\1 \2').
-        gsub(/([Nn])([^Nn])/,'\1 \2').
-        scan(/[^\s]+/)
-
-      regions.inject([]) do |contigs, region|
-        unless region.downcase.include? 'n'
-          contigs <<(
-            {
-            :num     => contig_no += 1,
-            :start   => position,
-            :stop    => position + region.length - 1,
-            :size    => region.length,
-            :percent => region.length / total_length * 100,
-            :gc      => gc(region) / atgc(region) * 100
-            }
-          )
-        end
-        position += region.length
-        contigs
-      end
-    end.to_a.flatten
+    enumerator_for_contig(scaffold).
+      mapping{|i| i[:gc] = gc(i[:sequence]) / atgc(i[:sequence]) * 100; i}.
+      mapping{|i| i[:size] = i[:sequence].length; i}.
+      mapping{|i| i[:percent] = i[:size] / total_length * 100; i}.
+      mapping{|i| i.delete(:sequence); i}.
+      to_a
   end
 
 end
