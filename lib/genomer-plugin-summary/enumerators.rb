@@ -40,6 +40,30 @@ module GenomerPluginSummary::Enumerators
     end.last
   end
 
+  def enumerator_for_gap(scaffold)
+    genome = scaffold.mapping(&:sequence).to_a.join
+    regions = genome.
+      gsub(/([^Nn])([Nn])/,'\1 \2').
+      gsub(/([Nn])([^Nn])/,'\1 \2').
+      scan(/[^\s]+/)
+
+    regions.inject([0,1,[]]) do |memo,entry|
+      position, number, entries = memo
+
+      unless entry.downcase.include? 'n'
+        next [position + entry.length, number, entries]
+      end
+
+      i = {:sequence => entry,
+           :start    => position + 1,
+           :stop     => position + entry.length,
+           :type     => :gap,
+           :id       => number}
+
+      [position + entry.length, number + 1, entries << i]
+    end.last
+  end
+
   def enumerator_for_all(scaffold)
     scaffold.inject([0,[]]) do |memo,entry|
       position, entries = memo

@@ -158,17 +158,17 @@ Feature: Producing a summary of the genome
       +----------------+-----------+
       | Sequences (#)  |         2 |
       | Contigs (#)    |         3 |
-      | Gaps (#)       |         0 |
+      | Gaps (#)       |         2 |
       +----------------+-----------+
       | Size (bp)      |        18 |
       | Sequences (bp) |        18 |
       | Contigs (bp)   |        12 |
-      | Gaps (bp)      |         0 |
+      | Gaps (bp)      |         6 |
       +----------------+-----------+
       | G+C (%)        |     50.00 |
       | Sequences (%)  |    100.00 |
       | Contigs (%)    |     66.67 |
-      | Gaps (%)       |      0.00 |
+      | Gaps (%)       |     33.33 |
       +----------------+-----------+
 
       """
