@@ -7,16 +7,19 @@ class GenomerPluginSummary::Genome < Genomer::Plugin
   include GenomerPluginSummary::Format
 
   LAYOUT = [
-    {:name => 'Contigs (#)',  :entry_type => :sequence,   :method => :count},
-    {:name => 'Gaps (#)',     :entry_type => :unresolved, :method => :count},
+    {:name => 'Sequences (#)', :entry_type => :sequence,  :method => :count},
+    {:name => 'Contigs (#)',   :entry_type => :contig,    :method => :count},
+    {:name => 'Gaps (#)',      :entry_type => :gap,       :method => :count},
     :separator,
-    {:name => 'Size (bp)',    :entry_type => :all,        :method => :length},
-    {:name => 'Contigs (bp)', :entry_type => :sequence,   :method => :length},
-    {:name => 'Gaps (bp)',    :entry_type => :unresolved, :method => :length},
+    {:name => 'Size (bp)',      :entry_type => :all,      :method => :length},
+    {:name => 'Sequences (bp)', :entry_type => :sequence, :method => :length},
+    {:name => 'Contigs (bp)',   :entry_type => :contig,   :method => :length},
+    {:name => 'Gaps (bp)',      :entry_type => :gap,      :method => :length},
     :separator,
-    {:name => 'G+C (%)',      :entry_type => :all,        :method => :gc_content},
-    {:name => 'Contigs (%)',  :entry_type => :sequence,   :method => :percent},
-    {:name => 'Gaps (%)',     :entry_type => :unresolved, :method => :percent}
+    {:name => 'G+C (%)',        :entry_type => :all,      :method => :gc_content},
+    {:name => 'Sequences (%)',  :entry_type => :sequence, :method => :percent},
+    {:name => 'Contigs (%)',    :entry_type => :contig,   :method => :percent},
+    {:name => 'Gaps (%)',       :entry_type => :gap,      :method => :percent}
   ]
 
   FORMATTING = {

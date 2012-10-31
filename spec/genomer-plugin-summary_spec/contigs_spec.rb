@@ -4,12 +4,13 @@ require 'genomer-plugin-summary/contigs'
 describe GenomerPluginSummary::Contigs do
 
   def row(num,start,stop,percent,gc)
-    {:num      => num,
-     :start    => start,
-     :stop     => stop,
-     :size     => (stop - start) + 1,
-     :percent  => percent,
-     :gc       => gc}
+    {:id      => num,
+     :start   => start,
+     :stop    => stop,
+     :size    => (stop - start) + 1,
+     :percent => percent,
+     :type    => :contig,
+     :gc      => gc}
   end
 
   describe "#tabulate" do
@@ -178,8 +179,7 @@ describe GenomerPluginSummary::Contigs do
       end
 
       it do
-        should == [row(1, 1,  6, 50.0, 50.0),
-                   row(2, 7, 12, 50.0, 50.0)]
+        should == [row(1, 1, 12, 100.0, 50.0)]
       end
     end
 
