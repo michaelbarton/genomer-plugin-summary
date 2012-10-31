@@ -16,6 +16,30 @@ module GenomerPluginSummary::Enumerators
       selecting{|i| i[:type] == :unresolved}
   end
 
+  def enumerator_for_contig(scaffold)
+    genome = scaffold.mapping(&:sequence).to_a.join
+    regions = genome.
+      gsub(/([^Nn])([Nn])/,'\1 \2').
+      gsub(/([Nn])([^Nn])/,'\1 \2').
+      scan(/[^\s]+/)
+
+    regions.inject([0,1,[]]) do |memo,entry|
+      position, number, entries = memo
+
+      if entry.downcase.include? 'n'
+        next [position + entry.length, number, entries]
+      end
+
+      i = {:sequence => entry,
+           :start    => position + 1,
+           :stop     => position + entry.length,
+           :type     => :contig,
+           :id       => number}
+
+      [position + entry.length, number + 1, entries << i]
+    end.last
+  end
+
   def enumerator_for_all(scaffold)
     scaffold.inject([0,[]]) do |memo,entry|
       position, entries = memo
@@ -24,7 +48,7 @@ module GenomerPluginSummary::Enumerators
            :start      => position + 1,
            :stop       => position + entry.sequence.length,
            :type       => entry.entry_type,
-           :id         => entry.entry_type == :sequence ? entry.source : nil} 
+           :id         => entry.entry_type == :sequence ? entry.source : nil}
 
       [position + entry.sequence.length, entries << i]
     end.last
