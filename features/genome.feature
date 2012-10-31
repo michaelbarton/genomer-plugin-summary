@@ -68,7 +68,7 @@ Feature: Producing a summary of the genome
       |          Scaffold          |
       +----------------+-----------+
       | Sequences (#)  |         2 |
-      | Contigs (#)    |         2 |
+      | Contigs (#)    |         1 |
       | Gaps (#)       |         0 |
       +----------------+-----------+
       | Size (bp)      |         8 |
@@ -158,12 +158,12 @@ Feature: Producing a summary of the genome
       +----------------+-----------+
       | Sequences (#)  |         2 |
       | Contigs (#)    |         3 |
-      | Gaps (#)       |         2 |
+      | Gaps (#)       |         0 |
       +----------------+-----------+
       | Size (bp)      |        18 |
       | Sequences (bp) |        18 |
       | Contigs (bp)   |        12 |
-      | Gaps (bp)      |         6 |
+      | Gaps (bp)      |         0 |
       +----------------+-----------+
       | G+C (%)        |     50.00 |
       | Sequences (%)  |    100.00 |
@@ -199,7 +199,7 @@ Feature: Producing a summary of the genome
      Then the exit status should be 0
       And the output should contain:
       """
-      sequences#,2
+      sequences_#,2
       contigs_#,2
       gaps_#,1
       size_bp,13
@@ -207,7 +207,7 @@ Feature: Producing a summary of the genome
       contigs_bp,8
       gaps_bp,5
       g+c_%,75.00
-      contigs_%,61.54
+      sequences_%,61.54
       contigs_%,61.54
       gaps_%,38.46
       """
