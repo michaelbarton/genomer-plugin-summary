@@ -1,20 +1,24 @@
 require 'spec_helper'
-require 'genomer-plugin-summary/scaffold'
+require 'genomer-plugin-summary/genome'
 
-describe GenomerPluginSummary::Scaffold do
+describe GenomerPluginSummary::Genome do
 
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(data) + "\n"
+      described_class.new([],{}).tabulate(data,flags)
+    end
+
+    let(:data) do
+      [['Contigs (#)',1.0],
+        :separator,
+          ['Gaps (#)',0]]
     end
 
     context "passed table data" do
 
-      let(:data) do
-        [['Contigs (#)',1.0],
-          :separator,
-         ['Gaps (#)',0]]
+      let(:flags) do
+        {}
       end
 
       it do
@@ -26,6 +30,21 @@ describe GenomerPluginSummary::Scaffold do
       +--------------+-----------+
       | Gaps (#)     |         0 |
       +--------------+-----------+
+        EOS
+      end
+
+    end
+
+    context "passed table with the format option" do
+
+      let(:flags) do
+        {:output => 'csv'}
+      end
+
+      it do
+        should ==<<-EOS.unindent!
+          contigs_#,1.00
+          gaps_#,0
         EOS
       end
     end

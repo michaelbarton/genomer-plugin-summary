@@ -70,6 +70,7 @@ describe GenomerPluginSummary::Metrics do
     end
 
   end
+
   describe "#count" do
 
     subject do
@@ -250,6 +251,69 @@ describe GenomerPluginSummary::Metrics do
       end
     end
 
+  end
+
+  describe "#sequence_total" do
+
+    def row(name,start,stop,percent,gc)
+      {:id       => name,
+        :type     => :sequence,
+        :start    => start,
+        :stop     => stop,
+        :size     => (stop - start) + 1,
+        :percent  => percent,
+        :gc       => gc}
+    end
+
+    subject do
+      metric.sequence_total(sequences)
+    end
+
+    context "passed an empty array" do
+      let(:sequences) do
+        []
+      end
+
+      it do
+        should == {
+          :start   => 0,
+          :stop    => 0,
+          :size    => 0,
+          :percent => 0,
+          :gc      => 0 }
+      end
+    end
+
+    context "passed one entry" do
+      let(:sequences) do
+        [row('contig1',1,6,100.0,50.0)]
+      end
+
+      it do
+        should == {
+          :start   => 1,
+          :stop    => 6,
+          :size    => 6,
+          :percent => 100.0,
+          :gc      => 50.0 }
+      end
+    end
+
+    context "passed two entries less than 100% of the scaffold" do
+      let(:sequences) do
+        [row('contig1', 1,  6,  30.0, 50.0),
+         row('contig2', 15, 20, 30.0, 50.0)]
+      end
+
+      it do
+        should == {
+          :start   => 1,
+          :stop    => 20,
+          :size    => 12,
+          :percent => 60.0,
+          :gc      => 50.0 }
+      end
+    end
   end
 
 end

@@ -4,9 +4,10 @@ require 'genomer-plugin-summary/sequences'
 describe GenomerPluginSummary::Sequences do
 
   def row(name,start,stop,percent,gc)
-    {:sequence => name,
+    {:id       => name,
+     :type     => :sequence,
      :start    => start,
-     :end      => stop,
+     :stop     => stop,
      :size     => (stop - start) + 1,
      :percent  => percent,
      :gc       => gc}
@@ -15,7 +16,11 @@ describe GenomerPluginSummary::Sequences do
   describe "#tabulate" do
 
     subject do
-      described_class.new([],{}).tabulate(sequences,total) + "\n"
+      described_class.new([],{}).tabulate(sequences,total,flags)
+    end
+
+    let(:flags) do
+      {}
     end
 
     context "passed an empty array" do
@@ -25,11 +30,11 @@ describe GenomerPluginSummary::Sequences do
       end
 
       let(:total) do
-        {:start   => 'NA',
-         :end     => 'NA',
-         :size    => 'NA',
-         :percent => 'NA',
-         :gc      => 'NA' }
+        {:start   => 0,
+         :stop    => 0,
+         :size    => 0,
+         :percent => 0,
+         :gc      => 0 }
       end
 
       it do
@@ -37,10 +42,10 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       +------------------+------------+------------+------------+----------+--------+
-      | All              |         NA |         NA |         NA |       NA |     NA |
+      | All              |          0 |          0 |          0 |     0.00 |   0.00 |
       +------------------+------------+------------+------------+----------+--------+
         EOS
       end
@@ -50,17 +55,12 @@ describe GenomerPluginSummary::Sequences do
     context "passed an array with a single row" do
 
       let(:sequences) do
-        [{:sequence   => 'contig1',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 }]
+        [row('contig1',1,4,100.0,50.0)]
       end
 
       let(:total) do
         {:start   => '1',
-         :end     => '4',
+         :stop    => '4',
          :size    => '4',
          :percent => 100.0,
          :gc      => 50.0 }
@@ -71,7 +71,7 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       | contig1          |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
@@ -85,23 +85,13 @@ describe GenomerPluginSummary::Sequences do
     context "passed a array with two rows" do
 
       let(:sequences) do
-        [{:sequence   => 'contig1',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 },
-         {:sequence   => 'contig2',
-          :start      => '1',
-          :end        => '4',
-          :size       => '4',
-          :percent    => 100.0,
-          :gc         => 50.0 }]
+        [row('contig1',1,4,100.0,50.0),
+         row('contig2',1,4,100.0,50.0)]
       end
 
       let(:total) do
         {:start   => '1',
-         :end     => '4',
+         :stop    => '4',
          :size    => '4',
          :percent => 100.0,
          :gc      => 50.0 }
@@ -112,13 +102,43 @@ describe GenomerPluginSummary::Sequences do
       +------------------+------------+------------+------------+----------+--------+
       |                             Scaffold Sequences                              |
       +------------------+------------+------------+------------+----------+--------+
-      | Sequence         | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
+      |     Sequence     | Start (bp) |  End (bp)  | Size (bp)  | Size (%) | GC (%) |
       +------------------+------------+------------+------------+----------+--------+
       | contig1          |          1 |          4 |          4 |   100.00 |  50.00 |
       | contig2          |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
       | All              |          1 |          4 |          4 |   100.00 |  50.00 |
       +------------------+------------+------------+------------+----------+--------+
+        EOS
+      end
+
+    end
+
+    context "passed the csv output option" do
+
+      let(:flags) do
+        {:output => 'csv'}
+      end
+
+      let(:sequences) do
+        [row('contig1',1,4,100.0,50.0),
+         row('contig2',1,4,100.0,50.0)]
+      end
+
+      let(:total) do
+        {:start   => '1',
+         :stop    => '4',
+         :size    => '4',
+         :percent => 100.0,
+         :gc      => 50.0 }
+      end
+
+      it do
+        should ==<<-EOS.unindent!
+          sequence,start_bp,end_bp,size_bp,size_%,gc_%
+          contig1,1,4,4,100.00,50.00
+          contig2,1,4,4,100.00,50.00
+          all,1,4,4,100.00,50.00
         EOS
       end
 
@@ -177,59 +197,6 @@ describe GenomerPluginSummary::Sequences do
       end
     end
 
-  end
-
-  describe "#total" do
-
-    subject do
-      described_class.new([],{}).total(sequences)
-    end
-
-    context "passed an empty array" do
-      let(:sequences) do
-        []
-      end
-
-      it do
-        should == {
-          :start   => 'NA',
-          :end     => 'NA',
-          :size    => 'NA',
-          :percent => 'NA',
-          :gc      => 'NA' }
-      end
-    end
-
-    context "passed one entry" do
-      let(:sequences) do
-        [row('contig1',1,6,100.0,50.0)]
-      end
-
-      it do
-        should == {
-          :start   => 1,
-          :end     => 6,
-          :size    => 6,
-          :percent => 100.0,
-          :gc      => 50.0 }
-      end
-    end
-
-    context "passed two entries less than 100% of the scaffold" do
-      let(:sequences) do
-        [row('contig1', 1,  6,  30.0, 50.0),
-         row('contig2', 15, 20, 30.0, 50.0)]
-      end
-
-      it do
-        should == {
-          :start   => 1,
-          :end     => 20,
-          :size    => 12,
-          :percent => 60.0,
-          :gc      => 50.0 }
-      end
-    end
   end
 
 end
