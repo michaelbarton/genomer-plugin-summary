@@ -1,9 +1,12 @@
+# GENOMER-SUMMARY 1
+
+## NAME
+
 genomer-summary(1) -- generate summaries of genomer projects
-============================================================
 
 ## SYNOPSIS
 
-`genomer summary` <summary-type> [<options>...]
+`genomer summary` \<summary-type\> [\<options\>...]
 
 ## DESCRIPTION
 
