@@ -1,7 +1,15 @@
 Feature: Producing a summary of the scaffold sequences
   In order to have an overview of the sequences in a scaffold
   A user can use the "sequence" command
-  to generate the a tabular output of the scaffold sequences
+  to generate a tabular output of the scaffold sequences
+
+  @disable-bundler
+  Scenario: Getting the man page for the scaffold sequences summary
+    Given I create a new genomer project
+     When I run `genomer man summary sequences`
+     Then the exit status should be 0
+      And the output should contain a valid man page
+      And the output should contain "GENOMER-SUMMARY-SEQUENCES(1)"
 
   @disable-bundler
   Scenario: An empty scaffold
