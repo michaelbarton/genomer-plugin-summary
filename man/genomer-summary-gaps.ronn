@@ -1,5 +1,8 @@
+# GENOMER-SUMMARY-GAPS 1
+
+## NAME
+
 genomer-summary-gaps(1) -- summarise the gaps in the scaffold
-=============================================================
 
 ## SYNOPSIS
 
