@@ -1,7 +1,15 @@
 Feature: Producing a summary of the genome
   In order to have an overview of the genome
   A user can use the "genome" command
-  to generate the a tabular output of the genome
+  to generate a tabular output of the genome
+
+  @disable-bundler
+  Scenario: Getting the man page for the scaffold genome summary
+    Given I create a new genomer project
+     When I run `genomer man summary genome`
+     Then the exit status should be 0
+      And the output should contain a valid man page
+      And the output should contain "GENOMER-SUMMARY-GENOME(1)"
 
   Scenario: A scaffold with a single sequence
     Given I create a new genomer project

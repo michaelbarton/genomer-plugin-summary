@@ -1,0 +1,53 @@
+# GENOMER-SUMMARY-CONTIGS 1
+
+## NAME
+
+genomer-summary-contigs(1) -- summarise the contigs in the scaffold
+
+## SYNOPSIS
+
+`genomer summary contigs [<--output=csv>]`
+
+## DESCRIPTION
+
+Generates a summary of the contigous sequence used in the scaffolded output
+sequence. The output may be generated in CSV format if preferred using the
+<--output=csv> option. This summary produces a table with the following
+attributes:
+
+  * Contig:
+
+    The number of the contig in the final scaffold. Generated from counting
+    each contiguous length of non-N characters from the beginning scaffolded
+    sequence.
+
+  * Start:
+
+    The start position of the contig in the final scaffold sequence.
+
+  * End:
+
+    The end position of the contig in the final scaffold sequence.
+
+  * Size (bp):
+
+    The size of the contig in the final scaffold sequence.
+
+  * Size (%):
+
+    The size of the contig in the final scaffold sequence as a percentage of
+    the total sequence.
+
+  * GC:
+
+    The G+C content of the contig as percentage the total GCAT length of the
+    contig.
+
+## BUGS
+
+**Genomer-summary** is written in Ruby and uses several RubyGem dependencies. 
+See the .gemspec file in the install directory for version details.
+
+## COPYRIGHT
+
+**Genomer** is Copyright (C) 2011 Michael Barton <http://michaelbarton.me.uk>

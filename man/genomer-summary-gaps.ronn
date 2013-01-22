@@ -1,15 +1,19 @@
+# GENOMER-SUMMARY-GAPS 1
+
+## NAME
+
 genomer-summary-gaps(1) -- summarise the gaps in the scaffold
-=============================================================
 
 ## SYNOPSIS
 
-`genomer summary gaps`
+`genomer summary gaps [<--output=csv>]`
 
 ## DESCRIPTION
 
 Generates a summary of the gaps (regions of N characters) in the scaffolded 
-output sequence. This summary command lists these gaps with the following 
-attributes:
+output sequence. The output may be generated in CSV format if preferred using
+the <--output=csv> option. This summary command lists these gaps with the
+following attributes:
 
   * Number:
     Incremental gap number from the start of the sequence.
