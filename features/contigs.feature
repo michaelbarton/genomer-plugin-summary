@@ -1,7 +1,15 @@
 Feature: Producing a summary of the scaffold contigs
   In order to have an overview of the contigs in a scaffold
   A user can use the "contigs" command
-  to generate the a tabular output of the scaffold contigs
+  to generate a tabular output of the scaffold contigs
+
+  @disable-bundler
+  Scenario: Getting the man page for the scaffold contigs summary
+    Given I create a new genomer project
+     When I run `genomer man summary contigs`
+     Then the exit status should be 0
+      And the output should contain a valid man page
+      And the output should contain "GENOMER-SUMMARY-CONTIGS(1)"
 
   @disable-bundler
   Scenario: An empty scaffold

@@ -1,7 +1,15 @@
 Feature: Producing a summary of the scaffold gaps
   In order to have an overview of the gaps in a scaffold
   A user can use the "gaps" command
-  to generate the a tabular output of the scaffold gaps
+  to generate a tabular output of the scaffold gaps
+
+  @disable-bundler
+  Scenario: Getting the man page for the scaffold gaps summary
+    Given I create a new genomer project
+     When I run `genomer man summary gaps`
+     Then the exit status should be 0
+      And the output should contain a valid man page
+      And the output should contain "GENOMER-SUMMARY-GAPS(1)"
 
   @disable-bundler
   Scenario: A single contig scaffold
